@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clara &amp; Pedro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:    #f4f0e8;
+      --parchment:#ede8de;
+      --warm-line:#cec7b8;
+      --stone:    #7a7060;
+      --bark:     #4a4238;
+      --ink:      #1a1714;
+      --accent:   #8b1a1a;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+```
+/* ── LANG ── */
+.lang-toggle {
+  position: fixed; top: 22px; right: 28px;
+  z-index: 1000; display: flex; align-items: center;
+}
+.lang-btn {
+  background: none; border: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; font-weight: 300;
+  letter-spacing: 0.18em; color: var(--stone);
+  cursor: pointer; padding: 4px 8px; transition: color 0.2s;
+}
+.lang-btn.active { color: var(--ink); }
+.lang-btn:hover  { color: var(--ink); }
+.lang-sep { color: var(--warm-line); font-size: 11px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 48px;
+  transition: background 0.4s, padding 0.4s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled {
+  background: rgba(244,240,232,0.97);
+  backdrop-filter: blur(12px);
+  padding: 15px 48px;
+  border-bottom-color: var(--warm-line);
+}
+.nav-logo img { height: 22px; width: auto; opacity: 0.85; }
+.nav-links { display: flex; gap: 40px; list-style: none; }
+.nav-links a {
+  font-size: 10px; font-weight: 300;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--stone); transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+  height: 1px; background: var(--ink); transform: scaleX(0); transition: transform 0.3s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-ham {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; background: none; border: none; padding: 4px;
+}
+.nav-ham span { display: block; width: 22px; height: 1px; background: var(--ink); }
+
+/* ── MOBILE MENU ── */
+.mobile-menu {
+  display: none; position: fixed; inset: 0;
+  background: var(--cream); z-index: 998;
+  flex-direction: column; align-items: center; justify-content: center; gap: 40px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 400; color: var(--ink); transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--stone); }
+.mobile-close {
+  position: absolute; top: 24px; right: 28px;
+  background: none; border: none; color: var(--stone); font-size: 22px; cursor: pointer;
+}
+
+/* ── HERO — cream/light ── */
+#hero {
+  min-height: 100svh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 120px 48px 80px;
+  background: var(--cream);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+/* very subtle decorative lines */
+#hero::before, #hero::after {
+  content: ''; position: absolute; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent 10%, var(--warm-line) 40%, var(--warm-line) 60%, transparent 90%);
+  opacity: 0.5;
+}
+#hero::before { left: 15%; }
+#hero::after  { right: 15%; }
+
+.hero-inner {
+  position: relative; z-index: 1;
+  animation: fadeUp 1.4s cubic-bezier(0.16,1,0.3,1) forwards;
+  opacity: 0;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-monogram {
+  display: flex; justify-content: center; margin-bottom: 32px;
+}
+.hero-monogram img { width: clamp(80px, 12vw, 120px); height: auto; opacity: 0.22; }
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(52px, 8vw, 96px);
+  color: var(--ink); line-height: 1; letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.hero-title em { font-style: italic; color: var(--stone); }
+.hero-date {
+  font-size: 11px; font-weight: 300;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--stone);
+}
+.hero-rule {
+  width: 1px; height: 64px; background: var(--warm-line);
+  margin: 48px auto 0;
+}
+
+/* ── SHARED ── */
+section { padding: 110px 0; }
+.section-inner { max-width: 1000px; margin: 0 auto; padding: 0 48px; }
+.rule { width: 100%; height: 1px; background: var(--warm-line); }
+.eyebrow {
+  display: block; font-size: 10px; font-weight: 300;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 20px;
+}
+.heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: clamp(36px, 5vw, 60px);
+  line-height: 1.05; letter-spacing: -0.01em;
+}
+.heading em { font-style: italic; }
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RSVP ── */
+#rsvp { background: white; }
+.rsvp-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: start; padding-top: 52px; }
+.rsvp-intro { font-size: 16px; line-height: 1.9; color: var(--bark); margin-top: 28px; }
+.rsvp-intro strong { font-weight: 400; color: var(--ink); }
+.field { margin-bottom: 26px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.field label {
+  display: block; font-size: 10px; font-weight: 300;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 9px;
+}
+.field input {
+  width: 100%; border: none; border-bottom: 1px solid var(--warm-line);
+  background: none; font-family: 'Jost', sans-serif;
+  font-size: 15px; font-weight: 300; color: var(--ink);
+  padding: 10px 0; outline: none; transition: border-color 0.25s;
+}
+.field input:focus { border-color: var(--ink); }
+.field input::placeholder { color: #bbb; }
+.radio-row { display: flex; gap: 28px; margin-top: 6px; flex-wrap: wrap; }
+.radio-opt {
+  display: flex; align-items: center; gap: 9px;
+  cursor: pointer; font-size: 14px; font-weight: 300; color: var(--bark);
+}
+.radio-opt input[type="radio"] { display: none; }
+.radio-mark {
+  width: 14px; height: 14px; border: 1px solid var(--warm-line);
+  border-radius: 50%; flex-shrink: 0; position: relative; transition: border-color 0.2s;
+}
+.radio-opt input:checked ~ .radio-mark { border-color: var(--ink); }
+.radio-opt input:checked ~ .radio-mark::after {
+  content: ''; position: absolute; inset: 3px;
+  background: var(--ink); border-radius: 50%;
+}
+.btn-send {
+  background: var(--ink); color: var(--cream);
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; font-weight: 300;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  padding: 16px 48px; border: none; cursor: pointer;
+  transition: background 0.25s; margin-top: 8px; display: inline-block;
+}
+.btn-send:hover { background: var(--accent); }
+.form-thanks {
+  display: none;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 22px;
+  color: var(--bark); padding: 24px 0; line-height: 1.6;
+}
+
+/* ── LOCAL ── */
+#local { background: var(--parchment); }
+.local-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; padding-top: 52px; }
+.local-copy p { font-size: 15px; line-height: 1.95; color: var(--bark); margin-bottom: 13px; }
+.local-copy strong { font-weight: 400; color: var(--ink); }
+.btn-map {
+  display: inline-block;
+  border-bottom: 1px solid var(--stone);
+  font-size: 10px; font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--stone); padding-bottom: 3px;
+  transition: color 0.2s, border-color 0.2s; margin-top: 12px;
+}
+.btn-map:hover { color: var(--ink); border-color: var(--ink); }
+.dresscode-block { background: var(--cream); padding: 40px; }
+.dresscode-block h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 400; margin-bottom: 18px;
+}
+.dresscode-block p { font-size: 15px; line-height: 1.9; color: var(--bark); margin-bottom: 10px; }
+.dresscode-block strong { font-weight: 400; color: var(--ink); }
+.dresscode-note { font-size: 12px; color: var(--stone); line-height: 1.75; border-top: 1px solid var(--warm-line); padding-top: 14px; margin-top: 14px; }
+
+/* ── DICAS ── */
+#dicas { background: var(--cream); }
+.dicas-cols { display: grid; grid-template-columns: repeat(3,1fr); gap: 56px; margin-top: 56px; }
+.dica-col h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 400;
+  margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--warm-line);
+}
+.acc-item { border-bottom: 1px solid var(--warm-line); }
+.acc-btn {
+  width: 100%; background: none; border: none;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 14px 0; cursor: pointer;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px; font-weight: 300; color: var(--bark);
+  text-align: left; gap: 10px; transition: color 0.2s;
+}
+.acc-btn:hover { color: var(--ink); }
+.acc-icon { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; position: relative; color: var(--stone); }
+.acc-icon::before, .acc-icon::after { content: ''; position: absolute; background: currentColor; transition: transform 0.3s, opacity 0.3s; }
+.acc-icon::before { top: 6px; left: 0; right: 0; height: 1px; }
+.acc-icon::after  { left: 6px; top: 0; bottom: 0; width: 1px; }
+.acc-item.open .acc-icon::after { transform: rotate(90deg); opacity: 0; }
+.acc-body { display: none; padding: 0 0 14px; }
+.acc-item.open .acc-body { display: block; }
+.acc-body p { font-size: 13px; line-height: 1.8; color: var(--bark); margin-bottom: 8px; }
+.acc-link {
+  display: inline-block;
+  font-size: 10px; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--stone); border-bottom: 1px solid var(--warm-line);
+  padding-bottom: 2px; transition: color 0.2s, border-color 0.2s;
+}
+.acc-link:hover { color: var(--ink); border-color: var(--ink); }
+
+/* ── PRESENTES ── */
+#presentes { background: var(--parchment); }
+.presentes-intro { font-size: 15px; line-height: 1.9; color: var(--bark); max-width: 560px; margin-top: 24px; }
+.addr-strip {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap;
+  padding: 22px 30px;
+  background: var(--ink); color: white;
+  margin: 44px 0 36px;
+}
+.addr-strip-left strong {
+  display: block; font-size: 9px; font-weight: 300;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(255,255,255,0.45); margin-bottom: 6px;
+}
+.addr-strip-left p { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,0.85); }
+.btn-copy-addr {
+  background: none; border: 1px solid rgba(255,255,255,0.22);
+  color: rgba(255,255,255,0.6);
+  font-family: 'Jost', sans-serif;
+  font-size: 9px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 9px 18px; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.2s;
+}
+.btn-copy-addr:hover { background: rgba(255,255,255,0.1); color: white; }
+.gift-filters { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 28px; }
+.gf {
+  background: none; border: 1px solid var(--warm-line); color: var(--stone);
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; font-weight: 300; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 7px 16px; cursor: pointer; transition: all 0.2s;
+}
+.gf.active, .gf:hover { background: var(--ink); border-color: var(--ink); color: white; }
+.gift-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 2px; }
+.gift-card {
+  background: var(--cream); position: relative; overflow: hidden;
+  aspect-ratio: 3/4; display: flex; flex-direction: column; cursor: pointer;
+}
+.gift-card.gifted { cursor: default; }
+.gift-img { flex: 1; overflow: hidden; background: var(--warm-line); position: relative; }
+.gift-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+.gift-card:not(.gifted):hover .gift-img img { transform: scale(1.05); }
+.gift-body { padding: 16px 18px 20px; background: var(--cream); }
+.gift-store-tag {
+  font-size: 9px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 5px;
+  display: flex; align-items: center; gap: 5px;
+}
+.sdot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.sdot-ml   { background: #e8a020; }
+.sdot-tok  { background: #c0501e; }
+.sdot-zara { background: var(--ink); }
+.gift-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; line-height: 1.25; margin-bottom: 3px; }
+.gift-desc { font-size: 11px; color: var(--stone); line-height: 1.55; margin-bottom: 14px; }
+.gift-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.gift-price { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; }
+.gift-btn {
+  font-family: 'Jost', sans-serif;
+  font-size: 9px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase;
+  background: var(--ink); color: var(--cream);
+  border: none; padding: 8px 16px; cursor: pointer; white-space: nowrap; transition: background 0.2s;
+}
+.gift-btn:hover:not(:disabled) { background: var(--accent); }
+.gift-btn:disabled { opacity: 0.28; cursor: default; }
+.gifted-overlay {
+  position: absolute; inset: 0;
+  background: rgba(244,240,232,0.9);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; z-index: 2;
+}
+.gifted-badge {
+  font-size: 9px; font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--bark); border: 1px solid var(--warm-line); padding: 9px 18px; background: var(--cream);
+}
+.gifted-by { font-family: 'Cormorant Garamond', serif; font-size: 14px; font-style: italic; color: var(--stone); }
+.gift-card[data-hidden="true"] { display: none; }
+
+/* ── FOOTER ── */
+footer { background: var(--ink); padding: 72px 48px; text-align: center; }
+.footer-mono { display: flex; justify-content: center; margin-bottom: 18px; }
+.footer-mono img { width: 52px; opacity: 0.13; filter: invert(1) brightness(2); }
+footer p { font-size: 11px; letter-spacing: 0.14em; line-height: 2.2; color: rgba(255,255,255,0.4); }
+footer em { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: rgba(255,255,255,0.5); }
+footer a { color: rgba(255,255,255,0.4); transition: color 0.2s; }
+footer a:hover { color: white; }
+
+/* ── MODAL ── */
+.modal-bg {
+  position: fixed; inset: 0;
+  background: rgba(26,23,20,0.55); backdrop-filter: blur(8px);
+  z-index: 2000; display: flex; align-items: center; justify-content: center;
+  padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.modal-bg.open { opacity: 1; pointer-events: all; }
+.modal-box {
+  background: var(--cream); max-width: 440px; width: 100%;
+  padding: 46px 42px; position: relative;
+  transform: translateY(18px); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  max-height: 90svh; overflow-y: auto;
+}
+.modal-bg.open .modal-box { transform: translateY(0); }
+.modal-x { position: absolute; top: 18px; right: 20px; background: none; border: none; font-size: 16px; color: var(--stone); cursor: pointer; }
+.modal-eye { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--stone); margin-bottom: 10px; display: block; }
+.modal-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; margin-bottom: 3px; line-height: 1.3; }
+.modal-store { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone); display: block; margin-bottom: 22px; }
+.modal-addr-box { background: var(--parchment); border-left: 2px solid var(--accent); padding: 14px 18px; margin-bottom: 18px; }
+.modal-addr-box strong { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--stone); font-weight: 300; display: block; margin-bottom: 7px; }
+.modal-addr-box p { font-size: 13px; line-height: 1.8; color: var(--bark); }
+.btn-copy-modal {
+  background: none; border: 1px solid var(--warm-line); color: var(--stone);
+  font-family: 'Jost', sans-serif; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 7px 14px; cursor: pointer; margin-top: 10px; transition: all 0.2s;
+}
+.btn-copy-modal:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.btn-go {
+  display: block; width: 100%; text-align: center;
+  background: var(--ink); color: var(--cream);
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase;
+  padding: 15px; text-decoration: none; transition: background 0.2s;
+}
+.btn-go:hover { background: var(--accent); }
+.modal-rule { height: 1px; background: var(--warm-line); margin: 22px 0; }
+.modal-bought-eye { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--stone); display: block; margin-bottom: 7px; }
+.modal-bought-desc { font-size: 13px; color: var(--bark); line-height: 1.75; margin-bottom: 14px; }
+.modal-name-input {
+  width: 100%; border: none; border-bottom: 1px solid var(--warm-line);
+  background: none; font-family: 'Jost', sans-serif;
+  font-size: 14px; font-weight: 300; color: var(--ink);
+  padding: 10px 0; outline: none; transition: border-color 0.2s; margin-bottom: 14px;
+}
+.modal-name-input:focus { border-color: var(--ink); }
+.modal-name-input::placeholder { color: #bbb; }
+.btn-mark {
+  display: block; width: 100%; text-align: center;
+  background: none; border: 1px solid var(--bark); color: var(--bark);
+  font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 300;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  padding: 14px; cursor: pointer; transition: all 0.2s;
+}
+.btn-mark:hover:not(:disabled) { background: var(--bark); color: var(--cream); }
+.btn-mark:disabled { opacity: 0.35; cursor: default; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 780px) {
+  nav { padding: 18px 22px; }
+  nav.scrolled { padding: 13px 22px; }
+  .nav-links { display: none; }
+  .nav-ham { display: flex; }
+  .lang-toggle { top: 18px; right: 68px; }
+  section { padding: 80px 0; }
+  .section-inner { padding: 0 22px; }
+  .rsvp-layout, .local-layout { grid-template-columns: 1fr; gap: 48px; }
+  .field-row { grid-template-columns: 1fr; }
+  .dicas-cols { grid-template-columns: 1fr; gap: 32px; }
+  .addr-strip { flex-direction: column; align-items: flex-start; }
+  .modal-box { padding: 34px 22px; }
+  #hero::before, #hero::after { display: none; }
+}
+
+/* ── i18n ── */
+[data-lang] { display: none; }
+html[lang="pt-BR"] [data-lang="pt"] { display: block; }
+html[lang="en"]    [data-lang="en"] { display: block; }
+[data-i] { display: none; }
+html[lang="pt-BR"] [data-i="pt"] { display: inline; }
+html[lang="en"]    [data-i="en"] { display: inline; }
+```
+
+  </style>
+</head>
+<body>
+
+  <!-- LANG -->
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btnPT" onclick="setLang('pt-BR')">PT</button>
+    <span class="lang-sep">/</span>
+    <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
+  </div>
+
+  <!-- NAV -->
+
+  <nav id="nav">
+    <div class="nav-logo"><img src="logo.png" alt="Clara &amp; Pedro"/></div>
+    <ul class="nav-links">
+      <li><a href="#rsvp"><span data-i="pt">Confirmar Presença</span><span data-i="en">RSVP</span></a></li>
+      <li><a href="#local"><span data-i="pt">Local & Traje</span><span data-i="en">Venue & Dress Code</span></a></li>
+      <li><a href="#dicas"><span data-i="pt">Dicas Ribeirão</span><span data-i="en">Ribeirão Tips</span></a></li>
+      <li><a href="#presentes"><span data-i="pt">Presentes</span><span data-i="en">Gifts</span></a></li>
+    </ul>
+    <button class="nav-ham" id="navHam"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose">✕</button>
+    <a href="#rsvp"      onclick="closeMob()"><span data-i="pt">Confirmar Presença</span><span data-i="en">RSVP</span></a>
+    <a href="#local"     onclick="closeMob()"><span data-i="pt">Local & Traje</span><span data-i="en">Venue & Dress Code</span></a>
+    <a href="#dicas"     onclick="closeMob()"><span data-i="pt">Dicas Ribeirão</span><span data-i="en">Ribeirão Tips</span></a>
+    <a href="#presentes" onclick="closeMob()"><span data-i="pt">Presentes</span><span data-i="en">Gifts</span></a>
+  </div>
+
+  <!-- HERO -->
+
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-monogram"><img src="monogram.png" alt="CP"/></div>
+      <h1 class="hero-title">
+        <span data-i="pt">Vamos nos casar.</span>
+        <span data-i="en">We're getting married.</span>
+      </h1>
+      <p class="hero-date">
+        <span data-i="pt">Sábado · 27 de junho · 19h · Ribeirão Preto</span>
+        <span data-i="en">Saturday · June 27th · 7 PM · Ribeirão Preto, Brazil</span>
+      </p>
+      <div class="hero-rule"></div>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+
+  <section id="rsvp">
+    <div class="section-inner">
+      <span class="eyebrow reveal"><span data-i="pt">Confirmar Presença</span><span data-i="en">RSVP</span></span>
+      <div class="rsvp-layout">
+        <div class="reveal">
+          <h2 class="heading">
+            <span data-i="pt">Você vai estar<br/><em>com a gente?</em></span>
+            <span data-i="en">Will you be there<br/><em>with us?</em></span>
+          </h2>
+          <p class="rsvp-intro">
+            <span data-i="pt">Por favor, confirme sua presença e celebre com a gente. Aguardamos sua resposta até <strong>31 de maio</strong>.</span>
+            <span data-i="en">Please confirm your attendance and celebrate with us. We'd love to hear from you by <strong>May 31st</strong>.</span>
+          </p>
+        </div>
+        <div class="reveal">
+          <form id="rsvpForm" action="https://formspree.io/f/mkopknzn" method="POST">
+            <div class="field-row">
+              <div class="field">
+                <label><span data-i="pt">Nome</span><span data-i="en">First name</span></label>
+                <input type="text" name="nome" placeholder="Clara" required/>
+              </div>
+              <div class="field">
+                <label><span data-i="pt">Sobrenome</span><span data-i="en">Last name</span></label>
+                <input type="text" name="sobrenome" placeholder="Bisinoto" required/>
+              </div>
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input type="email" name="email" placeholder="clara@email.com" required/>
+            </div>
+            <div class="field">
+              <label><span data-i="pt">Vai comparecer?</span><span data-i="en">Will you attend?</span></label>
+              <div class="radio-row">
+                <label class="radio-opt">
+                  <input type="radio" name="presenca" value="Sim"/>
+                  <span class="radio-mark"></span>
+                  <span data-i="pt">Sim!</span><span data-i="en">Yes!</span>
+                </label>
+                <label class="radio-opt">
+                  <input type="radio" name="presenca" value="Não"/>
+                  <span class="radio-mark"></span>
+                  <span data-i="pt">Não poderei ir</span><span data-i="en">I cannot attend</span>
+                </label>
+              </div>
+            </div>
+            <div class="field">
+              <label><span data-i="pt">Número de convidados</span><span data-i="en">Number of guests</span></label>
+              <input type="number" name="convidados" min="1" max="10" placeholder="1"/>
+            </div>
+            <button type="submit" class="btn-send">
+              <span data-i="pt">Enviar</span><span data-i="en">Submit</span>
+            </button>
+          </form>
+          <p class="form-thanks" id="formThanks">
+            <span data-i="pt">Obrigado! Mal podemos esperar para celebrar com você. 🤍</span>
+            <span data-i="en">Thank you! We can't wait to celebrate with you. 🤍</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rule"></div>
+
+  <!-- LOCAL & TRAJE -->
+
+  <section id="local">
+    <div class="section-inner">
+      <span class="eyebrow reveal"><span data-i="pt">Local & Traje</span><span data-i="en">Venue & Dress Code</span></span>
+      <div class="local-layout">
+        <div class="local-copy reveal">
+          <h2 class="heading" style="margin-bottom:32px">Casa de Campo</h2>
+          <p><strong>Av. Ticiano Mazetto, 131 · Ribeirão Preto, SP</strong></p>
+          <p>
+            <span data-i="pt">Para que todos possam aproveitar com segurança e conforto, sugerimos Uber ou táxi. O trajeto inclui um trecho de rodovia.</span>
+            <span data-i="en">For everyone's safety and comfort, we recommend Uber or taxi to reach the venue. The route includes a stretch of highway.</span>
+          </p>
+          <p>
+            <span data-i="pt">Para quem preferir ir de carro, disponibilizaremos valet gratuito. Se beber, por favor, não dirija.</span>
+            <span data-i="en">For those who prefer to drive, complimentary valet will be available. Please do not drink and drive.</span>
+          </p>
+          <a href="https://maps.google.com/?q=Av.+Ticiano+Mazetto+131+Ribeirao+Preto" target="_blank" class="btn-map">
+            <span data-i="pt">Abrir no Google Maps ↗</span>
+            <span data-i="en">Open in Google Maps ↗</span>
+          </a>
+        </div>
+        <div class="dresscode-block reveal">
+          <h3><span data-i="pt">Traje</span><span data-i="en">Dress Code</span></h3>
+          <p><strong><span data-i="pt">Social Completo</span><span data-i="en">Formal Attire</span></strong></p>
+          <p>
+            <span data-i="pt">Pedimos gentilmente <strong>terno completo com gravata</strong> e <strong>vestido longo</strong>.</span>
+            <span data-i="en">We kindly request a <strong>full suit with tie</strong> and <strong>floor-length gown</strong>.</span>
+          </p>
+          <p class="dresscode-note">
+            <span data-i="pt">Por favor, evite tons próximos ao branco: prata, off-white, nude e bege.</span>
+            <span data-i="en">Please avoid shades close to white: silver, off-white, nude and beige.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rule"></div>
+
+  <!-- DICAS -->
+
+  <section id="dicas">
+    <div class="section-inner">
+      <span class="eyebrow reveal"><span data-i="pt">Guia da Cidade</span><span data-i="en">City Guide</span></span>
+      <h2 class="heading reveal" style="margin-bottom:0">
+        <span data-i="pt">Dicas de Ribeirão</span>
+        <span data-i="en">Ribeirão Tips</span>
+      </h2>
+      <div class="dicas-cols reveal">
+
+```
+    <!-- HOTÉIS -->
+    <div class="dica-col">
+      <h3><span data-i="pt">Hospedagem</span><span data-i="en">Hotels</span></h3>
+
+      <div class="acc-item">
+        <button class="acc-btn" onclick="acc(this)">
+          <span>Mont Blanc Premium · $$$ · 15min</span><span class="acc-icon"></span>
+        </button>
+        <div class="acc-body">
+          <p><span data-i="pt">O único hotel 5 estrelas da região. Piscina, spa, restaurante e serviço VIP.</span><span data-i="en">The only 5-star hotel in the region. Pool, spa, restaurant and VIP service.</span></p>
+          <a href="https://www.montblancpremium.com.br" target="_blank" class="acc-link">montblancpremium.com.br ↗</a>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" onclick="acc(this)">
+          <span>TRYP by Wyndham · $$–$$$ · 20min</span><span class="acc-icon"></span>
+        </button>
+        <div class="acc-body">
+          <p><span data-i="pt">Moderno, bem localizado no centro. Piscina, academia e café da manhã incluso.</span><span data-i="en">Modern, well-located in the center. Pool, gym and breakfast included.</span></p>
+          <a href="https://www.instagram.com/trypribeiraopreto/" target="_blank" class="acc-link">@trypribeiraopreto ↗</a>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" onclick="acc(this)">
+          <span>Wyndham Garden · $$ · 15min</span><span class="acc-icon"></span>
+        </button>
+        <div class="acc-body">
+          <p><span data-i="pt">Ótimo custo-benefício, área nobre da cidade. Piscina e spa.</span><span data-i="en">Excellent value, upscale area. Pool and spa on site.</span></p>
+          <a href="https://www.instagram.com/wyndhamgardenrp/" target="_blank" class="acc-link">@wyndhamgardenrp ↗</a>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" onclick="acc(this)">
+          <span>Ibis Ribeirão Preto · $–$$ · 20min</span><span class="acc-icon"></span>
+        </button>
+        <div class="acc-body">
+          <p><span data-i="pt">Próximo ao Shopping Iguatemi. Prático, confortável e com bom custo-benefício.</span><span data-i="en">Near Iguatemi Mall. Practical, comfortable and great value.</span></p>
+          <a href="https://www.instagram.com/ibisribeiraopretoshopping/" target="_blank" class="acc-link">@ibisribeiraopretoshopping ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- BELEZA -->
+    <div class="dica-col">
+      <h3><span data-i="pt">Beleza</span><span data-i="en">Beauty</span></h3>
+
+      <div class="acc-item">
+        <button class="acc-btn" onclick="acc(this)">
+          <span>Aminatta Hair</span><span class="acc-icon"></span>
+        </button>
+        <div class="acc-body">
+          <p><span data-i="pt">Referência em cabelo e penteados para eventos. Agende com antecedência.</span><span data-i="en">Top hair and styling salon for events. Book well in advance.</span></p>
+          <a href="https://www.instagram.com/aminattahair/" target="_blank" class="acc-link">@aminattahair ↗</a>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" onclick="acc(this)">
+          <span>Studio W · Iguatemi</span><span class="acc-icon"></span>
+        </button>
+        <div class="acc-body">
+          <p><span data-i="pt">Um dos melhores salões do Brasil, eleito pela Harper's Bazaar. Dentro do Iguatemi.</span><span data-i="en">One of Brazil's top salons, elected by Harper's Bazaar. Inside Iguatemi Mall.</span></p>
+          <a href="https://www.instagram.com/studio_w/" target="_blank" class="acc-link">@studio_w ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESTAURANTES -->
+    <div class="dica-col">
+      <h3><span data-i="pt">Restaurantes & Bares</span><span data-i="en">Restaurants & Bars</span></h3>
+
+      <div class="acc-item">
+        <button class="acc-btn" onclick="acc(this)">
+          <span>Mirai</span><span class="acc-icon"></span>
+        </button>
+        <div class="acc-body">
+          <p><span data-i="pt">Japonês contemporâneo. Um dos melhores da cidade. Reserva imprescindível.</span><span data-i="en">Contemporary Japanese. One of the best in town. Reservations essential.</span></p>
+          <a href="https://www.instagram.com/miraijapa/" target="_blank" class="acc-link">@miraijapa ↗</a>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" onclick="acc(this)">
+          <span>Hard Rock Café</span><span class="acc-icon"></span>
+        </button>
+        <div class="acc-body">
+          <p><span data-i="pt">Ambiente animado para grupos. Música ao vivo nos fins de semana. Aberto de qui a dom.</span><span data-i="en">Lively atmosphere for groups. Live music on weekends. Open Thu–Sun.</span></p>
+          <a href="https://www.instagram.com/hrc.ribeiraopreto/" target="_blank" class="acc-link">@hrc.ribeiraopreto ↗</a>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" onclick="acc(this)">
+          <span>Toca do Urso · Colorado</span><span class="acc-icon"></span>
+        </button>
+        <div class="acc-body">
+          <p><span data-i="pt">Bar da Cervejaria Colorado. Espaço enorme, chope artesanal e música ao vivo.</span><span data-i="en">Colorado Brewery bar. Huge space, craft beer and live music.</span></p>
+          <a href="https://www.instagram.com/tocadoursodacolorado/" target="_blank" class="acc-link">@tocadoursodacolorado ↗</a>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" onclick="acc(this)">
+          <span>Choperia Pinguim</span><span class="acc-icon"></span>
+        </button>
+        <div class="acc-body">
+          <p><span data-i="pt">Tradição desde 1936. O chope mais famoso de Ribeirão. Centro e Ribeirão Shopping.</span><span data-i="en">A tradition since 1936. Ribeirão's most famous draft beer. Two locations.</span></p>
+          <a href="https://www.instagram.com/pinguimribeiraopretooficial/" target="_blank" class="acc-link">@pinguimribeiraopretooficial ↗</a>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" onclick="acc(this)">
+          <span>Bar do Nelson</span><span class="acc-icon"></span>
+        </button>
+        <div class="acc-body">
+          <p><span data-i="pt">26 anos de tradição. O parmegiana mais famoso de Ribeirão e petiscos regionais.</span><span data-i="en">26 years of tradition. Ribeirão's most famous parmigiana and regional bar food.</span></p>
+          <a href="https://www.instagram.com/bardonelsonrp/" target="_blank" class="acc-link">@bardonelsonrp ↗</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+```
+
+  </section>
+
+  <div class="rule"></div>
+
+  <!-- PRESENTES -->
+
+  <section id="presentes">
+    <div class="section-inner">
+      <span class="eyebrow reveal"><span data-i="pt">Lista de Presentes</span><span data-i="en">Gift Registry</span></span>
+      <div>
+        <h2 class="heading reveal"><span data-i="pt">Presentes</span><span data-i="en">Gifts</span></h2>
+        <p class="presentes-intro reveal">
+          <span data-i="pt">Sua presença já é o nosso maior presente. Mas se quiser nos presentear, selecionamos alguns itens com carinho. Ao finalizar a compra, use o endereço de entrega indicado.</span>
+          <span data-i="en">Your presence is already our greatest gift. But if you'd like to give something, here are a few items we'd love. Please use the delivery address provided when checking out.</span>
+        </p>
+
+```
+    <div class="addr-strip reveal">
+      <div class="addr-strip-left">
+        <strong><span data-i="pt">Endereço de Entrega</span><span data-i="en">Delivery Address</span></strong>
+        <p>Clara Bisinoto &amp; Pedro Zambon · Rua Lamartine Belém Barbosa, 216 · Ribeirânia, Ribeirão Preto - SP · CEP 14096-250</p>
+      </div>
+      <button class="btn-copy-addr" id="copyAddrBtn">
+        <span data-i="pt">Copiar endereço</span><span data-i="en">Copy address</span>
+      </button>
+    </div>
+
+    <div class="gift-filters reveal">
+      <button class="gf active" data-f="all"><span data-i="pt">Todos</span><span data-i="en">All</span></button>
+      <button class="gf" data-f="cozinha"><span data-i="pt">Cozinha</span><span data-i="en">Kitchen</span></button>
+      <button class="gf" data-f="sala"><span data-i="pt">Sala</span><span data-i="en">Living</span></button>
+      <button class="gf" data-f="quarto"><span data-i="pt">Quarto</span><span data-i="en">Bedroom</span></button>
+      <button class="gf" data-f="mesa"><span data-i="pt">Mesa</span><span data-i="en">Dining</span></button>
+      <button class="gf" data-f="ml">Mercado Livre</button>
+      <button class="gf" data-f="tok">Tok&amp;Stok</button>
+      <button class="gf" data-f="zara">Zara Home</button>
+    </div>
+
+    <div class="gift-grid" id="giftGrid">
+      <div class="gift-card" id="g1" data-cat="cozinha" data-st="ml" data-url="https://www.mercadolivre.com.br/buscas/jogo-de-panelas-le-creuset" data-name="Jogo de Panelas Le Creuset" data-name-en="Le Creuset Cookware Set" data-store="Mercado Livre">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-ml"></span>Mercado Livre</p><p class="gift-name"><span data-i="pt">Jogo de Panelas Le Creuset</span><span data-i="en">Le Creuset Cookware Set</span></p><p class="gift-desc"><span data-i="pt">Cerâmica esmaltada, 5 peças</span><span data-i="en">Enameled ceramic, 5 pieces</span></p><div class="gift-foot"><span class="gift-price">R$ 2.890</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+      <div class="gift-card" id="g2" data-cat="sala" data-st="tok" data-url="https://www.tokstok.com.br/" data-name="Luminária de Mesa Arco" data-name-en="Arc Table Lamp" data-store="Tok&amp;Stok">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-tok"></span>Tok&amp;Stok</p><p class="gift-name"><span data-i="pt">Luminária de Mesa Arco</span><span data-i="en">Arc Table Lamp</span></p><p class="gift-desc"><span data-i="pt">Base mármore, cúpula linho</span><span data-i="en">Marble base, linen shade</span></p><div class="gift-foot"><span class="gift-price">R$ 1.240</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+      <div class="gift-card" id="g3" data-cat="quarto" data-st="zara" data-url="https://www.zarahome.com/br/" data-name="Jogo de Cama Linho Lavado" data-name-en="Washed Linen Bed Set" data-store="Zara Home">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-zara"></span>Zara Home</p><p class="gift-name"><span data-i="pt">Jogo de Cama Linho</span><span data-i="en">Washed Linen Bed Set</span></p><p class="gift-desc"><span data-i="pt">100% linho, queen, off-white</span><span data-i="en">100% linen, queen, off-white</span></p><div class="gift-foot"><span class="gift-price">R$ 1.490</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+      <div class="gift-card" id="g4" data-cat="cozinha" data-st="ml" data-url="https://www.mercadolivre.com.br/buscas/cafeteira-nespresso-vertuo" data-name="Cafeteira Nespresso Vertuo" data-name-en="Nespresso Vertuo" data-store="Mercado Livre">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-ml"></span>Mercado Livre</p><p class="gift-name"><span data-i="pt">Cafeteira Nespresso Vertuo</span><span data-i="en">Nespresso Vertuo</span></p><p class="gift-desc"><span data-i="pt">Cápsulas grandes, função espresso</span><span data-i="en">Large capsules, espresso function</span></p><div class="gift-foot"><span class="gift-price">R$ 1.100</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+      <div class="gift-card" id="g5" data-cat="sala" data-st="tok" data-url="https://www.tokstok.com.br/" data-name="Vasos Decorativos Cerâmica" data-name-en="Ceramic Vases" data-store="Tok&amp;Stok">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-tok"></span>Tok&amp;Stok</p><p class="gift-name"><span data-i="pt">Vasos Decorativos</span><span data-i="en">Ceramic Vases</span></p><p class="gift-desc"><span data-i="pt">Trio, acabamento fosco, terracota</span><span data-i="en">Trio, matte finish, terracotta</span></p><div class="gift-foot"><span class="gift-price">R$ 390</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+      <div class="gift-card" id="g6" data-cat="mesa" data-st="zara" data-url="https://www.zarahome.com/br/" data-name="Aparelho de Jantar Stoneware" data-name-en="Stoneware Dinner Set" data-store="Zara Home">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-zara"></span>Zara Home</p><p class="gift-name"><span data-i="pt">Aparelho de Jantar</span><span data-i="en">Stoneware Dinner Set</span></p><p class="gift-desc"><span data-i="pt">Cerâmica artesanal, 16 peças</span><span data-i="en">Handmade ceramic, 16 pieces</span></p><div class="gift-foot"><span class="gift-price">R$ 1.890</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+      <div class="gift-card" id="g7" data-cat="mesa" data-st="ml" data-url="https://www.mercadolivre.com.br/buscas/faqueiro-tramontina-inox" data-name="Faqueiro Tramontina 42 peças" data-name-en="Tramontina Cutlery Set" data-store="Mercado Livre">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-ml"></span>Mercado Livre</p><p class="gift-name"><span data-i="pt">Faqueiro Tramontina</span><span data-i="en">Tramontina Cutlery Set</span></p><p class="gift-desc"><span data-i="pt">Inox polido, 42 peças</span><span data-i="en">Polished stainless steel, 42 pcs</span></p><div class="gift-foot"><span class="gift-price">R$ 520</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+      <div class="gift-card" id="g8" data-cat="quarto" data-st="tok" data-url="https://www.tokstok.com.br/" data-name="Quadros Decorativos Duo" data-name-en="Decorative Frames Duo" data-store="Tok&amp;Stok">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-tok"></span>Tok&amp;Stok</p><p class="gift-name"><span data-i="pt">Quadros — Duo</span><span data-i="en">Frames — Duo</span></p><p class="gift-desc"><span data-i="pt">Impressão fine art, moldura carvalho</span><span data-i="en">Fine art print, oak frame</span></p><div class="gift-foot"><span class="gift-price">R$ 480</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+      <div class="gift-card" id="g9" data-cat="sala" data-st="zara" data-url="https://www.zarahome.com/br/" data-name="Almofadas Linho — Par" data-name-en="Linen Cushions — Pair" data-store="Zara Home">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-zara"></span>Zara Home</p><p class="gift-name"><span data-i="pt">Almofadas Linho — Par</span><span data-i="en">Linen Cushions — Pair</span></p><p class="gift-desc"><span data-i="pt">Linho natural, 50×50cm</span><span data-i="en">Natural linen, 50×50cm</span></p><div class="gift-foot"><span class="gift-price">R$ 340</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+      <div class="gift-card" id="g10" data-cat="cozinha" data-st="ml" data-url="https://www.mercadolivre.com.br/buscas/mixer-bamix" data-name="Mixer de Mão Bamix" data-name-en="Bamix Hand Blender" data-store="Mercado Livre">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1595521276210-eac37ba16c7d?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-ml"></span>Mercado Livre</p><p class="gift-name"><span data-i="pt">Mixer de Mão Bamix</span><span data-i="en">Bamix Hand Blender</span></p><p class="gift-desc"><span data-i="pt">200W, 3 acessórios, suíço</span><span data-i="en">200W, 3 accessories, Swiss</span></p><div class="gift-foot"><span class="gift-price">R$ 890</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+      <div class="gift-card" id="g11" data-cat="sala" data-st="tok" data-url="https://www.tokstok.com.br/" data-name="Espelho Redondo 80cm" data-name-en="Round Mirror 80cm" data-store="Tok&amp;Stok">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1615873968403-89e068629265?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-tok"></span>Tok&amp;Stok</p><p class="gift-name"><span data-i="pt">Espelho Redondo 80cm</span><span data-i="en">Round Mirror 80cm</span></p><p class="gift-desc"><span data-i="pt">Moldura metal dourado escovado</span><span data-i="en">Brushed gold metal frame</span></p><div class="gift-foot"><span class="gift-price">R$ 680</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+      <div class="gift-card" id="g12" data-cat="mesa" data-st="zara" data-url="https://www.zarahome.com/br/" data-name="Taças de Vinho — Jogo 6" data-name-en="Wine Glasses — Set of 6" data-store="Zara Home">
+        <div class="gift-img"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80" alt=""/></div>
+        <div class="gift-body"><p class="gift-store-tag"><span class="sdot sdot-zara"></span>Zara Home</p><p class="gift-name"><span data-i="pt">Taças de Vinho — Jogo 6</span><span data-i="en">Wine Glasses — Set of 6</span></p><p class="gift-desc"><span data-i="pt">Cristal soprado, haste fina</span><span data-i="en">Blown crystal, fine stem</span></p><div class="gift-foot"><span class="gift-price">R$ 720</span><button class="gift-btn"><span data-i="pt">Ver</span><span data-i="en">View</span></button></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <div class="footer-mono"><img src="monogram.png" alt="CP"/></div>
+    <p><em>Clara &amp; Pedro</em></p>
+    <p style="margin-top:8px"><a href="mailto:contato@anamariaboz.com.br">contato@anamariaboz.com.br</a></p>
+  </footer>
+
+  <!-- GIFT MODAL -->
+
+  <div class="modal-bg" id="giftModal">
+    <div class="modal-box">
+      <button class="modal-x" onclick="closeModal()">✕</button>
+      <span class="modal-eye"><span data-i="pt">Antes de ir para a loja</span><span data-i="en">Before going to the store</span></span>
+      <h3 id="mName"></h3>
+      <span class="modal-store" id="mStore"></span>
+      <div class="modal-addr-box">
+        <strong><span data-i="pt">Endereço de Entrega</span><span data-i="en">Delivery Address</span></strong>
+        <p>Clara Bisinoto &amp; Pedro Zambon<br/>Rua Lamartine Belém Barbosa, 216<br/>Ribeirânia · Ribeirão Preto - SP · CEP 14096-250</p>
+      </div>
+      <button class="btn-copy-modal" id="mCopyBtn"><span data-i="pt">Copiar endereço</span><span data-i="en">Copy address</span></button>
+      <br/><br/>
+      <a class="btn-go" id="mGoBtn" href="#" target="_blank" rel="noopener">
+        <span data-i="pt">Ir para a loja →</span><span data-i="en">Go to store →</span>
+      </a>
+      <div class="modal-rule"></div>
+      <span class="modal-bought-eye"><span data-i="pt">Já comprou?</span><span data-i="en">Already purchased?</span></span>
+      <p class="modal-bought-desc">
+        <span data-i="pt">Deixe seu nome para que os noivos saibam — obrigado! 🤍</span>
+        <span data-i="en">Leave your name so the couple knows — thank you! 🤍</span>
+      </p>
+      <input class="modal-name-input" id="mBuyerInput" type="text" maxlength="60" autocomplete="off"/>
+      <button class="btn-mark" id="mMarkBtn">
+        <span data-i="pt">Marcar como presenteado</span><span data-i="en">Mark as gifted</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const ADDR = 'Clara Bisinoto & Pedro Zambon\nRua Lamartine Belém Barbosa, 216\nRibeirânia, Ribeirão Preto - SP\nCEP 14096-250';
+
+    /* LANG */
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      document.getElementById('btnPT').classList.toggle('active', lang === 'pt-BR');
+      document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+      document.getElementById('mBuyerInput').placeholder = lang === 'en' ? 'e.g. Maria & João' : 'Ex: Maria e João';
+    }
+    setLang('pt-BR');
+
+    /* NAV SCROLL */
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 80);
+    });
+
+    /* MOBILE */
+    document.getElementById('navHam').addEventListener('click', () => document.getElementById('mobileMenu').classList.add('open'));
+    document.getElementById('mobileClose').addEventListener('click', closeMob);
+    function closeMob() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+    /* REVEAL */
+    const revObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+    /* RSVP */
+    document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('.btn-send');
+      const origHTML = btn.innerHTML;
+      btn.textContent = '...'; btn.disabled = true;
+      try {
+        const res = await fetch(e.target.action, { method: 'POST', body: new FormData(e.target), headers: { 'Accept': 'application/json' } });
+        if (res.ok) {
+          e.target.style.display = 'none';
+          document.getElementById('formThanks').style.display = 'block';
+        } else { btn.innerHTML = origHTML; btn.disabled = false; }
+      } catch { btn.innerHTML = origHTML; btn.disabled = false; }
+    });
+
+    /* ACCORDION */
+    function acc(btn) { btn.closest('.acc-item').classList.toggle('open'); }
+
+    /* COPY */
+    document.getElementById('copyAddrBtn').addEventListener('click', function() {
+      navigator.clipboard.writeText(ADDR).then(() => {
+        this.textContent = '✓';
+        setTimeout(() => { this.innerHTML = '<span data-i="pt">Copiar endereço</span><span data-i="en">Copy address</span>'; setLang(document.documentElement.lang); }, 2000);
+      });
+    });
+
+    /* GIFT STATE */
+    const GKEY = 'cp_v4';
+    function loadG() { try { return JSON.parse(localStorage.getItem(GKEY)) || {}; } catch { return {}; } }
+    function saveG(s) { localStorage.setItem(GKEY, JSON.stringify(s)); }
+    let gs = loadG();
+    function applyGs() {
+      document.querySelectorAll('.gift-card').forEach(card => {
+        const e = gs[card.id];
+        card.querySelector('.gifted-overlay')?.remove();
+        card.classList.remove('gifted');
+        const btn = card.querySelector('.gift-btn');
+        if (btn) { btn.disabled = false; btn.style.opacity = ''; }
+        if (e) {
+          card.classList.add('gifted');
+          const ov = document.createElement('div'); ov.className = 'gifted-overlay';
+          ov.innerHTML = `<span class="gifted-badge"><span data-i="pt">Já presenteado</span><span data-i="en">Gifted</span></span>${e.buyer ? `<span class="gifted-by">por ${e.buyer}</span>` : ''}`;
+          card.querySelector('.gift-img').appendChild(ov);
+          if (btn) { btn.disabled = true; btn.style.opacity = '0.28'; }
+        }
+      });
+    }
+    applyGs();
+
+    /* FILTERS */
+    document.querySelectorAll('.gf').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.gf').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.f;
+        document.querySelectorAll('.gift-card').forEach(card => {
+          card.dataset.hidden = (f === 'all' || card.dataset.cat === f || card.dataset.st === f) ? 'false' : 'true';
+        });
+      });
+    });
+
+    /* MODAL */
+    const gModal = document.getElementById('giftModal');
+    let curId = null;
+    document.querySelectorAll('.gift-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.gift-card');
+        if (card.classList.contains('gifted')) return;
+        curId = card.id;
+        const lang = document.documentElement.lang;
+        document.getElementById('mName').textContent = lang === 'en' ? card.dataset.nameEn : card.dataset.name;
+        document.getElementById('mStore').textContent = card.dataset.store;
+        document.getElementById('mGoBtn').href = card.dataset.url;
+        document.getElementById('mBuyerInput').value = '';
+        const mb = document.getElementById('mMarkBtn');
+        mb.disabled = false;
+        mb.innerHTML = '<span data-i="pt">Marcar como presenteado</span><span data-i="en">Mark as gifted</span>';
+        setLang(lang);
+        gModal.classList.add('open');
+      });
+    });
+    gModal.addEventListener('click', e => { if (e.target === gModal) closeModal(); });
+    function closeModal() { gModal.classList.remove('open'); }
+
+    document.getElementById('mCopyBtn').addEventListener('click', function() {
+      navigator.clipboard.writeText(ADDR).then(() => {
+        this.textContent = '✓';
+        setTimeout(() => { this.innerHTML = '<span data-i="pt">Copiar endereço</span><span data-i="en">Copy address</span>'; setLang(document.documentElement.lang); }, 2000);
+      });
+    });
+
+    document.getElementById('mMarkBtn').addEventListener('click', function() {
+      const name = document.getElementById('mBuyerInput').value.trim();
+      if (!name) { const inp = document.getElementById('mBuyerInput'); inp.style.borderColor = '#8b1a1a'; inp.focus(); setTimeout(() => inp.style.borderColor = '', 1500); return; }
+      gs[curId] = { buyer: name, date: new Date().toISOString() };
+      saveG(gs); applyGs();
+      this.textContent = document.documentElement.lang === 'en' ? 'Registered! Thank you 🤍' : 'Registrado! Obrigado 🤍';
+      this.disabled = true;
+      setTimeout(closeModal, 1500);
+    });
+  </script>
+
+</body>
+</html>
