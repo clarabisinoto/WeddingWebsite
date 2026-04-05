@@ -433,12 +433,13 @@ footer a:hover { color: white; }
 }
 
 /* ── i18n ── */
-[data-lang] { display: none; }
-html[lang="pt-BR"] [data-lang="pt"] { display: block; }
-html[lang="en"]    [data-lang="en"] { display: block; }
-[data-i] { display: none; }
-html[lang="pt-BR"] [data-i="pt"] { display: inline; }
-html[lang="en"]    [data-i="en"] { display: inline; }
+/* PT is default — always visible unless EN is active */
+[data-lang="en"] { display: none; }
+[data-i="en"]    { display: none; }
+html[lang="en"] [data-lang="pt"] { display: none; }
+html[lang="en"] [data-lang="en"] { display: block; }
+html[lang="en"] [data-i="pt"]    { display: none; }
+html[lang="en"] [data-i="en"]    { display: inline; }
 ```
 
   </style>
@@ -875,8 +876,6 @@ html[lang="en"]    [data-i="en"] { display: inline; }
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 ```
-const ADDR = 'Clara Bisinoto & Pedro Zambon\nRua Lamartine Belém Barbosa, 216\nRibeirânia, Ribeirão Preto - SP\nCEP 14096-250';
-
 /* LANG */
 function setLang(lang) {
   document.documentElement.lang = lang;
@@ -884,7 +883,10 @@ function setLang(lang) {
   document.getElementById('btnEN').classList.toggle('active', lang === 'en');
   document.getElementById('mBuyerInput').placeholder = lang === 'en' ? 'e.g. Maria & João' : 'Ex: Maria e João';
 }
-setLang('pt-BR');
+// Set PT as default on load (html lang attr already set in tag)
+document.getElementById('btnPT').classList.add('active');
+
+const ADDR = 'Clara Bisinoto & Pedro Zambon\nRua Lamartine Belém Barbosa, 216\nRibeirânia, Ribeirão Preto - SP\nCEP 14096-250';
 
 /* NAV SCROLL */
 window.addEventListener('scroll', () => {
