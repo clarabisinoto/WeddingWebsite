@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clara & Pedro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0d0d0d;
+      --off-white: #f7f5f2;
+      --warm-gray: #e0dbd4;
+      --mid-gray: #6e6560;
+      --dark-gray: #332e2a;
+      --accent: #8b1a1a;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--off-white);
+      color: var(--black);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+```
+/* ── LANG TOGGLE ── */
+.lang-toggle {
+  position: fixed;
+  top: 20px; right: 24px;
+  z-index: 1000;
+  display: flex;
+  border: 1px solid rgba(255,255,255,0.3);
+  overflow: hidden;
+}
+.lang-btn {
+  background: rgba(0,0,0,0.5);
+  color: rgba(255,255,255,0.75);
+  border: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  padding: 7px 13px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: all 0.2s;
+}
+.lang-btn.active { background: rgba(255,255,255,0.18); color: white; }
+.lang-btn:hover  { background: rgba(255,255,255,0.15); color: white; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 40px;
+  transition: background 0.4s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(13,13,13,0.93);
+  backdrop-filter: blur(10px);
+  padding: 14px 40px;
+}
+.nav-logo img {
+  height: 26px;
+  width: auto;
+  filter: invert(1) brightness(2);
+  opacity: 0.9;
+}
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: white; }
+.nav-ham {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+.nav-ham span { display: block; width: 22px; height: 1px; background: white; }
+
+/* ── MOBILE MENU ── */
+.mobile-menu {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(13,13,13,0.97);
+  z-index: 998;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  color: var(--off-white);
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--mid-gray); }
+.mobile-close {
+  position: absolute; top: 24px; right: 28px;
+  background: none; border: none;
+  color: white; font-size: 24px; cursor: pointer;
+}
+
+/* ── HERO ── */
+#hero {
+  position: relative;
+  height: 100svh; min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #0d0d0d;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #1a0a0a 0%, #0d0d0d 45%, #181208 100%);
+}
+.hero-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.35; pointer-events: none;
+}
+.hero-lines { position: absolute; inset: 0; pointer-events: none; }
+.hero-lines::before, .hero-lines::after {
+  content: '';
+  position: absolute; top: 50%;
+  width: 1px; height: 160px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateY(-50%);
+}
+.hero-lines::before { left: 14%; }
+.hero-lines::after  { right: 14%; }
+
+.hero-content {
+  position: relative; z-index: 1;
+  text-align: center;
+  padding: 0 24px;
+  animation: heroIn 1.4s cubic-bezier(0.16,1,0.3,1) forwards;
+  opacity: 0;
+}
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-monogram {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+.hero-monogram img {
+  width: clamp(80px, 13vw, 120px);
+  height: auto;
+  filter: invert(1) brightness(2);
+  opacity: 0.16;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(38px, 7vw, 70px);
+  color: white;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}
+.hero-title em { font-style: italic; color: rgba(255,255,255,0.65); }
+.hero-date {
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 56px;
+}
+.hero-nav-btns {
+  display: flex; flex-wrap: wrap; gap: 1px; justify-content: center;
+}
+.hero-nav-btn {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; font-weight: 300;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 13px 22px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(4px);
+  transition: all 0.25s;
+}
+.hero-nav-btn:hover { background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.4); }
+.hero-scroll {
+  position: absolute; bottom: 32px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.3);
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  animation: scrollBounce 2s infinite;
+}
+.hero-scroll::after {
+  content: ''; display: block;
+  width: 1px; height: 32px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+}
+@keyframes scrollBounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ── SHARED ── */
+section { padding: 100px 0; }
+.section-inner { max-width: 960px; margin: 0 auto; padding: 0 40px; }
+.section-label {
+  font-size: 10px; font-weight: 400;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--mid-gray);
+  margin-bottom: 12px; display: block;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 400; line-height: 1.1;
+  margin-bottom: 40px;
+}
+.divider { width: 100%; height: 1px; background: var(--warm-gray); }
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RSVP ── */
+#rsvp { background: white; }
+.rsvp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.rsvp-intro { font-size: 15px; line-height: 1.85; color: var(--dark-gray); }
+.form-field { margin-bottom: 22px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-field label {
+  display: block; font-size: 10px; font-weight: 400;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--mid-gray); margin-bottom: 8px;
+}
+.form-field input {
+  width: 100%; border: none; border-bottom: 1px solid var(--warm-gray);
+  background: none; font-family: 'Jost', sans-serif;
+  font-size: 14px; font-weight: 300; color: var(--black);
+  padding: 10px 0; outline: none; transition: border-color 0.2s;
+}
+.form-field input:focus { border-color: var(--black); }
+.form-field input::placeholder { color: #aaa; }
+.radio-group { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
+.radio-label {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; font-size: 14px; font-weight: 300; color: var(--dark-gray);
+}
+.radio-label input[type="radio"] { display: none; }
+.radio-dot {
+  width: 16px; height: 16px; border: 1px solid #bbb;
+  border-radius: 50%; flex-shrink: 0; position: relative; transition: border-color 0.2s;
+}
+.radio-label input:checked + .radio-dot { border-color: var(--black); }
+.radio-label input:checked + .radio-dot::after {
+  content: ''; position: absolute; inset: 3px;
+  background: var(--black); border-radius: 50%;
+}
+.btn-primary {
+  background: var(--black); color: white;
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; font-weight: 400;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  padding: 16px 40px; border: none; cursor: pointer;
+  transition: background 0.2s; margin-top: 8px; display: inline-block;
+}
+.btn-primary:hover { background: var(--accent); }
+.form-success {
+  display: none; padding: 20px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 20px; color: var(--dark-gray);
+}
+
+/* ── LOCAL & TRAJE ── */
+#local { background: var(--off-white); }
+.local-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.local-text p { font-size: 14px; line-height: 1.9; color: var(--dark-gray); margin-bottom: 14px; }
+.btn-outline {
+  display: inline-block;
+  border: 1px solid var(--black); color: var(--black);
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  padding: 13px 28px; background: none; cursor: pointer;
+  transition: all 0.2s; margin-top: 8px;
+}
+.btn-outline:hover { background: var(--black); color: white; }
+.traje-box { border: 1px solid var(--warm-gray); padding: 36px; }
+.traje-icons { font-size: 40px; margin-bottom: 20px; display: flex; gap: 16px; }
+.traje-box h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 400; margin-bottom: 14px;
+}
+.traje-box p { font-size: 14px; line-height: 1.85; color: var(--dark-gray); margin-bottom: 10px; }
+.traje-note {
+  font-size: 12px; color: var(--mid-gray); line-height: 1.75;
+  border-top: 1px solid var(--warm-gray); padding-top: 14px; margin-top: 14px;
+}
+
+/* ── DICAS ── */
+#dicas { background: white; }
+.dicas-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 56px; }
+.dica-col h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 400;
+  margin-bottom: 20px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--warm-gray);
+}
+.accordion-item { border-bottom: 1px solid var(--warm-gray); }
+.accordion-trigger {
+  width: 100%; background: none; border: none;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0; cursor: pointer;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px; font-weight: 300; color: var(--black); text-align: left; gap: 12px;
+}
+.accordion-trigger:hover { color: var(--accent); }
+.accordion-icon { width: 16px; height: 16px; flex-shrink: 0; position: relative; }
+.accordion-icon::before, .accordion-icon::after {
+  content: ''; position: absolute; background: currentColor; transition: transform 0.3s, opacity 0.3s;
+}
+.accordion-icon::before { top: 7px; left: 0; right: 0; height: 1px; }
+.accordion-icon::after  { left: 7px; top: 0; bottom: 0; width: 1px; }
+.accordion-item.open .accordion-icon::after { transform: rotate(90deg); opacity: 0; }
+.accordion-body { display: none; padding: 0 0 14px; font-size: 13px; line-height: 1.75; color: var(--dark-gray); }
+.accordion-item.open .accordion-body { display: block; }
+
+/* ── PRESENTES ── */
+#presentes { background: var(--off-white); }
+.presentes-intro { font-size: 15px; line-height: 1.85; color: var(--dark-gray); max-width: 560px; margin-bottom: 44px; }
+.address-strip {
+  background: var(--black); color: white;
+  padding: 20px 32px; margin-bottom: 44px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.address-strip strong {
+  display: block; font-size: 10px; font-weight: 300;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.5); margin-bottom: 5px;
+}
+.address-strip p { font-size: 13px; line-height: 1.7; }
+.copy-addr-btn {
+  background: none; border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.65);
+  font-family: 'Jost', sans-serif;
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 8px 16px; cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: all 0.2s;
+}
+.copy-addr-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+.gift-filters { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 28px; }
+.gf-btn {
+  background: none; border: 1px solid var(--warm-gray); color: var(--mid-gray);
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; font-weight: 300; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 7px 16px; cursor: pointer; transition: all 0.2s;
+}
+.gf-btn.active, .gf-btn:hover { background: var(--black); border-color: var(--black); color: white; }
+.gift-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2px; }
+.gift-card {
+  background: white; position: relative; overflow: hidden;
+  aspect-ratio: 3/4; display: flex; flex-direction: column; cursor: pointer;
+}
+.gift-card.is-gifted { cursor: default; }
+.gift-card-img { flex: 1; overflow: hidden; background: var(--warm-gray); position: relative; }
+.gift-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); display: block; }
+.gift-card:not(.is-gifted):hover .gift-card-img img { transform: scale(1.05); }
+.gift-card-body { padding: 16px 20px 20px; background: white; }
+.gift-store {
+  font-size: 9px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--mid-gray); margin-bottom: 5px;
+  display: flex; align-items: center; gap: 5px;
+}
+.sdot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.sdot-ml   { background: #f5a623; }
+.sdot-tok  { background: #e05c2a; }
+.sdot-zara { background: #0d0d0d; border: 1px solid #999; }
+.gift-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 400; line-height: 1.25; margin-bottom: 3px;
+}
+.gift-desc { font-size: 12px; color: var(--mid-gray); line-height: 1.55; margin-bottom: 14px; }
+.gift-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.gift-price { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; }
+.gift-btn {
+  font-family: 'Jost', sans-serif;
+  font-size: 9px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase;
+  background: var(--black); color: white; border: none;
+  padding: 8px 16px; cursor: pointer; white-space: nowrap; transition: background 0.2s;
+}
+.gift-btn:hover:not(:disabled) { background: var(--accent); }
+.gift-btn:disabled { opacity: 0.3; cursor: default; }
+.gifted-overlay {
+  position: absolute; inset: 0;
+  background: rgba(247,245,242,0.9);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px; z-index: 2;
+}
+.gifted-badge {
+  font-size: 9px; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--dark-gray); border: 1px solid var(--warm-gray);
+  padding: 9px 18px; background: white;
+}
+.gifted-by { font-family: 'Cormorant Garamond', serif; font-size: 14px; font-style: italic; color: var(--mid-gray); }
+.gift-card[data-hidden="true"] { display: none; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--black); color: rgba(255,255,255,0.45);
+  text-align: center; padding: 64px 24px;
+}
+.footer-monogram { margin-bottom: 16px; display: flex; justify-content: center; }
+.footer-monogram img { width: 64px; opacity: 0.15; filter: invert(1) brightness(2); }
+footer p { font-size: 11px; letter-spacing: 0.12em; line-height: 2.1; }
+footer a { color: rgba(255,255,255,0.45); transition: color 0.2s; }
+footer a:hover { color: white; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(13,13,13,0.65); backdrop-filter: blur(6px);
+  z-index: 2000; display: flex; align-items: center; justify-content: center;
+  padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--off-white); max-width: 460px; width: 100%;
+  padding: 44px; position: relative;
+  transform: translateY(20px); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  max-height: 90svh; overflow-y: auto;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-close {
+  position: absolute; top: 18px; right: 20px;
+  background: none; border: none; font-size: 18px; color: var(--mid-gray); cursor: pointer;
+}
+.modal-eyebrow { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--mid-gray); margin-bottom: 12px; display: block; }
+.modal h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; margin-bottom: 4px; line-height: 1.3; }
+.modal-store-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid-gray); margin-bottom: 22px; display: block; }
+.addr-box { background: white; border-left: 2px solid var(--accent); padding: 16px 20px; margin-bottom: 20px; }
+.addr-box strong { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid-gray); font-weight: 400; display: block; margin-bottom: 8px; }
+.addr-box p { font-size: 13px; line-height: 1.8; color: var(--dark-gray); }
+.modal-copy-btn {
+  background: none; border: 1px solid var(--warm-gray); color: var(--mid-gray);
+  font-family: 'Jost', sans-serif;
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 7px 14px; cursor: pointer; margin-top: 10px; transition: all 0.2s;
+}
+.modal-copy-btn:hover { background: var(--black); color: white; border-color: var(--black); }
+.modal-go-btn {
+  display: block; width: 100%; text-align: center;
+  background: var(--black); color: white;
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase;
+  padding: 15px; text-decoration: none; transition: background 0.2s;
+}
+.modal-go-btn:hover { background: var(--accent); }
+.modal-divider { height: 1px; background: var(--warm-gray); margin: 22px 0; }
+.modal-bought-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid-gray); display: block; margin-bottom: 8px; }
+.modal-bought-desc { font-size: 13px; color: var(--dark-gray); line-height: 1.75; margin-bottom: 14px; }
+.modal-name-input {
+  width: 100%; border: none; border-bottom: 1px solid var(--warm-gray);
+  background: none; font-family: 'Jost', sans-serif;
+  font-size: 14px; font-weight: 300; color: var(--black);
+  padding: 10px 0; outline: none; transition: border-color 0.2s; margin-bottom: 14px;
+}
+.modal-name-input:focus { border-color: var(--black); }
+.modal-name-input::placeholder { color: #aaa; }
+.modal-mark-btn {
+  display: block; width: 100%; text-align: center;
+  background: none; border: 1px solid var(--dark-gray); color: var(--dark-gray);
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase;
+  padding: 14px; cursor: pointer; transition: all 0.2s;
+}
+.modal-mark-btn:hover:not(:disabled) { background: var(--dark-gray); color: white; }
+.modal-mark-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 18px 20px; }
+  nav.scrolled { padding: 12px 20px; }
+  .nav-links { display: none; }
+  .nav-ham { display: flex; }
+  .lang-toggle { top: 16px; right: 70px; }
+  section { padding: 72px 0; }
+  .section-inner { padding: 0 20px; }
+  .rsvp-grid, .local-grid { grid-template-columns: 1fr; gap: 44px; }
+  .form-row { grid-template-columns: 1fr; }
+  .dicas-grid { grid-template-columns: 1fr; gap: 36px; }
+  .hero-lines::before, .hero-lines::after { display: none; }
+  .address-strip { flex-direction: column; align-items: flex-start; }
+  .modal { padding: 32px 22px; }
+}
+
+/* ── i18n ── */
+[data-lang] { display: none; }
+html[lang="pt-BR"] [data-lang="pt"] { display: block; }
+html[lang="en"]    [data-lang="en"] { display: block; }
+[data-lang-inline] { display: none; }
+html[lang="pt-BR"] [data-lang-inline="pt"] { display: inline; }
+html[lang="en"]    [data-lang-inline="en"] { display: inline; }
+```
+
+  </style>
+</head>
+<body>
+
+  <!-- LANG -->
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btnPT" onclick="setLang('pt-BR')">PT</button>
+    <button class="lang-btn"        id="btnEN" onclick="setLang('en')">EN</button>
+  </div>
+
+  <!-- NAV -->
+
+  <nav id="nav">
+    <div class="nav-logo"><img src="logo.png" alt="Clara & Pedro" /></div>
+    <ul class="nav-links">
+      <li><a href="#rsvp"><span data-lang-inline="pt">Confirmar Presença</span><span data-lang-inline="en">RSVP</span></a></li>
+      <li><a href="#local"><span data-lang-inline="pt">Local & Traje</span><span data-lang-inline="en">Venue & Dress Code</span></a></li>
+      <li><a href="#dicas"><span data-lang-inline="pt">Dicas Ribeirão</span><span data-lang-inline="en">Ribeirão Tips</span></a></li>
+      <li><a href="#presentes"><span data-lang-inline="pt">Presentes</span><span data-lang-inline="en">Gifts</span></a></li>
+    </ul>
+    <button class="nav-ham" id="navHam"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose">✕</button>
+    <a href="#rsvp"      onclick="closeMobile()"><span data-lang-inline="pt">Confirmar Presença</span><span data-lang-inline="en">RSVP</span></a>
+    <a href="#local"     onclick="closeMobile()"><span data-lang-inline="pt">Local & Traje</span><span data-lang-inline="en">Venue & Dress Code</span></a>
+    <a href="#dicas"     onclick="closeMobile()"><span data-lang-inline="pt">Dicas Ribeirão</span><span data-lang-inline="en">Ribeirão Tips</span></a>
+    <a href="#presentes" onclick="closeMobile()"><span data-lang-inline="pt">Presentes</span><span data-lang-inline="en">Gifts</span></a>
+  </div>
+
+  <!-- HERO -->
+
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-lines"></div>
+    <div class="hero-content">
+      <div class="hero-monogram"><img src="monogram.png" alt="CP" /></div>
+      <h1 class="hero-title">
+        <span data-lang-inline="pt">Vamos nos casar.</span>
+        <span data-lang-inline="en">We're getting married.</span>
+      </h1>
+      <p class="hero-date">
+        <span data-lang-inline="pt">Sábado · 27 de Junho · 19h · Ribeirão Preto</span>
+        <span data-lang-inline="en">Saturday · June 27th · 7 PM · Ribeirão Preto</span>
+      </p>
+      <div class="hero-nav-btns">
+        <button class="hero-nav-btn" onclick="goTo('#rsvp')"><span data-lang-inline="pt">Confirmar Presença</span><span data-lang-inline="en">RSVP</span></button>
+        <button class="hero-nav-btn" onclick="goTo('#local')"><span data-lang-inline="pt">Local & Traje</span><span data-lang-inline="en">Venue & Dress Code</span></button>
+        <button class="hero-nav-btn" onclick="goTo('#dicas')"><span data-lang-inline="pt">Dicas Ribeirão</span><span data-lang-inline="en">Ribeirão Tips</span></button>
+        <button class="hero-nav-btn" onclick="goTo('#presentes')"><span data-lang-inline="pt">Presentes</span><span data-lang-inline="en">Gifts</span></button>
+      </div>
+    </div>
+    <div class="hero-scroll"><span data-lang-inline="pt">Rolar</span><span data-lang-inline="en">Scroll</span></div>
+  </section>
+
+  <!-- RSVP -->
+
+  <section id="rsvp">
+    <div class="section-inner">
+      <div class="rsvp-grid reveal">
+        <div>
+          <span class="section-label"><span data-lang-inline="pt">Confirmar Presença</span><span data-lang-inline="en">RSVP</span></span>
+          <h2 class="section-title">
+            <span data-lang-inline="pt">Você vai estar<br/><em>com a gente?</em></span>
+            <span data-lang-inline="en">Will you be there<br/><em>with us?</em></span>
+          </h2>
+          <p class="rsvp-intro">
+            <span data-lang-inline="pt">Sua presença é o maior presente. Confirme até <strong>31 de maio</strong> para que possamos nos preparar para recebê-los com carinho.</span>
+            <span data-lang-inline="en">Your presence is the greatest gift. Please confirm by <strong>May 31st</strong> so we can prepare to welcome you.</span>
+          </p>
+        </div>
+        <div>
+          <div id="rsvpForm">
+            <div class="form-row">
+              <div class="form-field">
+                <label data-lang="pt">Nome</label>
+                <label data-lang="en">First name</label>
+                <input type="text" id="firstName" placeholder="Clara" />
+              </div>
+              <div class="form-field">
+                <label data-lang="pt">Sobrenome</label>
+                <label data-lang="en">Last name</label>
+                <input type="text" id="lastName" placeholder="Bisinoto" />
+              </div>
+            </div>
+            <div class="form-field">
+              <label>Email</label>
+              <input type="email" id="email" placeholder="clara@email.com" />
+            </div>
+            <div class="form-field">
+              <label data-lang="pt">Você vai comparecer?</label>
+              <label data-lang="en">Will you attend?</label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="attending" value="yes" />
+                  <span class="radio-dot"></span>
+                  <span data-lang-inline="pt">Sim, estarei lá!</span>
+                  <span data-lang-inline="en">Yes, I'll be there!</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="attending" value="no" />
+                  <span class="radio-dot"></span>
+                  <span data-lang-inline="pt">Infelizmente não poderei ir.</span>
+                  <span data-lang-inline="en">Unfortunately, I cannot attend.</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-field">
+              <label data-lang="pt">Número de pessoas confirmadas</label>
+              <label data-lang="en">Number of guests</label>
+              <input type="number" id="guests" min="1" max="10" placeholder="1" />
+            </div>
+            <button class="btn-primary" onclick="submitRSVP()">
+              <span data-lang-inline="pt">Enviar</span>
+              <span data-lang-inline="en">Submit</span>
+            </button>
+          </div>
+          <div class="form-success" id="rsvpSuccess">
+            <span data-lang-inline="pt">Obrigado! Mal podemos esperar para te ver. 🤍</span>
+            <span data-lang-inline="en">Thank you! We can't wait to see you. 🤍</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- LOCAL & TRAJE -->
+
+  <section id="local">
+    <div class="section-inner">
+      <div class="local-grid reveal">
+        <div class="local-text">
+          <span class="section-label"><span data-lang-inline="pt">Local</span><span data-lang-inline="en">Venue</span></span>
+          <h2 class="section-title">Casa de Campo</h2>
+          <p><strong>Av. Ticiano Mazetto, 131 · Ribeirão Preto, SP</strong></p>
+          <p>
+            <span data-lang-inline="pt">Para que todos possam aproveitar a celebração com segurança e conforto, sugerimos a utilização de Uber ou táxi para o deslocamento. O trajeto inclui um trecho de rodovia.</span>
+            <span data-lang-inline="en">To ensure everyone can enjoy the celebration safely, we recommend using Uber or taxi. The route includes a stretch of highway.</span>
+          </p>
+          <p>
+            <span data-lang-inline="pt">Para quem preferir ir de carro, disponibilizaremos valet gratuito. Se beber, por favor, não dirija.</span>
+            <span data-lang-inline="en">For those who prefer to drive, complimentary valet will be available. Please do not drink and drive.</span>
+          </p>
+          <a href="https://maps.google.com/?q=Av.+Ticiano+Mazetto+131+Ribeirao+Preto" target="_blank" class="btn-outline">
+            <span data-lang-inline="pt">Abrir no Google Maps</span>
+            <span data-lang-inline="en">Open in Google Maps</span>
+          </a>
+        </div>
+        <div class="traje-box reveal">
+          <div class="traje-icons">🤵🏻 👗</div>
+          <h3><span data-lang-inline="pt">Traje</span><span data-lang-inline="en">Dress Code</span></h3>
+          <p><strong><span data-lang-inline="pt">Social Completo</span><span data-lang-inline="en">Formal Attire</span></strong></p>
+          <p>
+            <span data-lang-inline="pt">Pedimos gentilmente que os convidados optem por <strong>terno completo com gravata</strong> e <strong>vestido longo</strong>.</span>
+            <span data-lang-inline="en">We kindly request <strong>full suit with tie</strong> and <strong>floor-length gown</strong>.</span>
+          </p>
+          <p class="traje-note">
+            <span data-lang-inline="pt">Pedimos evitar tons próximos ao branco: prata, off-white, nude e bege.</span>
+            <span data-lang-inline="en">Please avoid shades close to white: silver, off-white, nude and beige.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- DICAS -->
+
+  <section id="dicas">
+    <div class="section-inner">
+      <span class="section-label"><span data-lang-inline="pt">Guia da Cidade</span><span data-lang-inline="en">City Guide</span></span>
+      <h2 class="section-title reveal"><span data-lang-inline="pt">Dicas de Ribeirão</span><span data-lang-inline="en">Ribeirão Tips</span></h2>
+      <div class="dicas-grid reveal">
+        <div class="dica-col">
+          <h3><span data-lang-inline="pt">Hospedagem</span><span data-lang-inline="en">Hotels</span></h3>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>Mont Blanc Premium · $$$ · 15min</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Hotel boutique sofisticado, próximo ao centro. Ótima estrutura e café da manhã.</span><span data-lang-inline="en">Sophisticated boutique hotel near downtown. Great amenities and breakfast.</span></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>TRYP by Wyndham · $$–$$$ · 20min</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Moderno, bem localizado. Piscina e academia disponíveis.</span><span data-lang-inline="en">Modern, well-located. Pool and gym available.</span></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>Wyndham Garden · $$ · 15min</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Ótimo custo-benefício para hospedagem de fim de semana.</span><span data-lang-inline="en">Excellent value for a weekend stay.</span></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>Ibis Iguatemi · $$–$$$ · 20min</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Próximo ao Shopping Iguatemi. Prático e confortável.</span><span data-lang-inline="en">Close to Iguatemi Mall. Practical and comfortable.</span></div>
+          </div>
+        </div>
+        <div class="dica-col">
+          <h3><span data-lang-inline="pt">Beleza</span><span data-lang-inline="en">Beauty</span></h3>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>Nina Brito Beauty</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Referência em makes e penteados para eventos. Agende com antecedência.</span><span data-lang-inline="en">Top salon for event makeup and hairstyles. Book well in advance.</span></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>Aminatta Beauty</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Especialista em tratamentos capilares e penteados sofisticados.</span><span data-lang-inline="en">Specializes in hair treatments and sophisticated hairstyles.</span></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>Sudio W Iguatemi</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Dentro do Iguatemi, conveniente para quem estará hospedado na região.</span><span data-lang-inline="en">Inside Iguatemi Mall — convenient for guests staying nearby.</span></div>
+          </div>
+        </div>
+        <div class="dica-col">
+          <h3><span data-lang-inline="pt">Restaurantes</span><span data-lang-inline="en">Restaurants</span></h3>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>Mirai</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Japonês contemporâneo. Um dos melhores da cidade. Reserva imprescindível.</span><span data-lang-inline="en">Contemporary Japanese. One of the best in town. Reservations essential.</span></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>Hard Rock Café</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Ambiente animado, ótimo para grupos. Música ao vivo nos fins de semana.</span><span data-lang-inline="en">Lively atmosphere, great for groups. Live music on weekends.</span></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>Toca do Urso · Colorado</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Bar e choperia clássico. Ambiente descontraído e chope gelado.</span><span data-lang-inline="en">Classic bar. Relaxed vibe and cold draft beer.</span></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>Choperia Pinguim</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Tradicional da cidade, petiscos e chope. Ótimo para o happy hour.</span><span data-lang-inline="en">City tradition — snacks and draft beer. Great for pre-wedding happy hour.</span></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAcc(this)"><span>Bar do Nelson</span><span class="accordion-icon"></span></button>
+            <div class="accordion-body"><span data-lang-inline="pt">Ponto histórico de Ribeirão Preto. Petiscos regionais e ambiente autêntico.</span><span data-lang-inline="en">Historic landmark. Regional snacks and authentic atmosphere.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PRESENTES -->
+
+  <section id="presentes">
+    <div class="section-inner">
+      <span class="section-label"><span data-lang-inline="pt">Lista de Presentes</span><span data-lang-inline="en">Gift Registry</span></span>
+      <h2 class="section-title reveal"><span data-lang-inline="pt">Presentes</span><span data-lang-inline="en">Gifts</span></h2>
+      <p class="presentes-intro reveal">
+        <span data-lang-inline="pt">Sua presença já é o nosso maior presente. Mas se quiser nos presentear, selecionamos alguns itens com carinho. Ao finalizar a compra, use o endereço de entrega indicado.</span>
+        <span data-lang-inline="en">Your presence is already our greatest gift. But if you'd like to give something, here are a few items we love. Please use the delivery address provided when checking out.</span>
+      </p>
+
+```
+  <div class="address-strip reveal">
+    <div>
+      <strong><span data-lang-inline="pt">Endereço de Entrega</span><span data-lang-inline="en">Delivery Address</span></strong>
+      <p>Clara Bisinoto &amp; Pedro Zambon · Rua Lamartine Belém Barbosa, 216 · Ribeirânia, Ribeirão Preto - SP · CEP 14096-250</p>
+    </div>
+    <button class="copy-addr-btn" id="copyAddrBtn">
+      <span data-lang-inline="pt">Copiar endereço</span>
+      <span data-lang-inline="en">Copy address</span>
+    </button>
+  </div>
+
+  <div class="gift-filters reveal">
+    <button class="gf-btn active" data-filter="all"><span data-lang-inline="pt">Todos</span><span data-lang-inline="en">All</span></button>
+    <button class="gf-btn" data-filter="cozinha"><span data-lang-inline="pt">Cozinha</span><span data-lang-inline="en">Kitchen</span></button>
+    <button class="gf-btn" data-filter="sala"><span data-lang-inline="pt">Sala</span><span data-lang-inline="en">Living</span></button>
+    <button class="gf-btn" data-filter="quarto"><span data-lang-inline="pt">Quarto</span><span data-lang-inline="en">Bedroom</span></button>
+    <button class="gf-btn" data-filter="mesa"><span data-lang-inline="pt">Mesa</span><span data-lang-inline="en">Dining</span></button>
+    <button class="gf-btn" data-filter="ml">Mercado Livre</button>
+    <button class="gf-btn" data-filter="tok">Tok&amp;Stok</button>
+    <button class="gf-btn" data-filter="zara">Zara Home</button>
+  </div>
+
+  <div class="gift-grid" id="giftGrid">
+    <div class="gift-card" id="g1" data-cat="cozinha" data-store="ml" data-url="https://www.mercadolivre.com.br/buscas/jogo-de-panelas-le-creuset" data-name="Jogo de Panelas Le Creuset" data-name-en="Le Creuset Cookware Set" data-store-name="Mercado Livre">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-ml"></span>Mercado Livre</p>
+        <p class="gift-name"><span data-lang-inline="pt">Jogo de Panelas Le Creuset</span><span data-lang-inline="en">Le Creuset Cookware Set</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">Cerâmica esmaltada, 5 peças</span><span data-lang-inline="en">Enameled ceramic, 5 pieces</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 2.890</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+    <div class="gift-card" id="g2" data-cat="sala" data-store="tok" data-url="https://www.tokstok.com.br/" data-name="Luminária de Mesa Arco" data-name-en="Arc Table Lamp" data-store-name="Tok&amp;Stok">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-tok"></span>Tok&amp;Stok</p>
+        <p class="gift-name"><span data-lang-inline="pt">Luminária de Mesa Arco</span><span data-lang-inline="en">Arc Table Lamp</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">Base mármore, cúpula linho</span><span data-lang-inline="en">Marble base, linen shade</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 1.240</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+    <div class="gift-card" id="g3" data-cat="quarto" data-store="zara" data-url="https://www.zarahome.com/br/" data-name="Jogo de Cama Linho Lavado" data-name-en="Washed Linen Bed Set" data-store-name="Zara Home">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-zara"></span>Zara Home</p>
+        <p class="gift-name"><span data-lang-inline="pt">Jogo de Cama Linho</span><span data-lang-inline="en">Washed Linen Bed Set</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">100% linho, queen, off-white</span><span data-lang-inline="en">100% linen, queen, off-white</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 1.490</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+    <div class="gift-card" id="g4" data-cat="cozinha" data-store="ml" data-url="https://www.mercadolivre.com.br/buscas/cafeteira-nespresso-vertuo" data-name="Cafeteira Nespresso Vertuo" data-name-en="Nespresso Vertuo" data-store-name="Mercado Livre">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-ml"></span>Mercado Livre</p>
+        <p class="gift-name"><span data-lang-inline="pt">Cafeteira Nespresso Vertuo</span><span data-lang-inline="en">Nespresso Vertuo</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">Cápsulas grandes, função espresso</span><span data-lang-inline="en">Large capsules, espresso function</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 1.100</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+    <div class="gift-card" id="g5" data-cat="sala" data-store="tok" data-url="https://www.tokstok.com.br/" data-name="Vasos Decorativos Cerâmica" data-name-en="Ceramic Vases" data-store-name="Tok&amp;Stok">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-tok"></span>Tok&amp;Stok</p>
+        <p class="gift-name"><span data-lang-inline="pt">Vasos Decorativos</span><span data-lang-inline="en">Ceramic Vases</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">Trio, acabamento fosco, terracota</span><span data-lang-inline="en">Trio, matte finish, terracotta</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 390</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+    <div class="gift-card" id="g6" data-cat="mesa" data-store="zara" data-url="https://www.zarahome.com/br/" data-name="Aparelho de Jantar Stoneware" data-name-en="Stoneware Dinner Set" data-store-name="Zara Home">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-zara"></span>Zara Home</p>
+        <p class="gift-name"><span data-lang-inline="pt">Aparelho de Jantar</span><span data-lang-inline="en">Stoneware Dinner Set</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">Cerâmica artesanal, 16 peças</span><span data-lang-inline="en">Handmade ceramic, 16 pieces</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 1.890</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+    <div class="gift-card" id="g7" data-cat="mesa" data-store="ml" data-url="https://www.mercadolivre.com.br/buscas/faqueiro-tramontina-inox" data-name="Faqueiro Tramontina 42 peças" data-name-en="Tramontina Cutlery Set" data-store-name="Mercado Livre">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-ml"></span>Mercado Livre</p>
+        <p class="gift-name"><span data-lang-inline="pt">Faqueiro Tramontina</span><span data-lang-inline="en">Tramontina Cutlery Set</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">Inox polido, 42 peças</span><span data-lang-inline="en">Polished stainless steel, 42 pcs</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 520</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+    <div class="gift-card" id="g8" data-cat="quarto" data-store="tok" data-url="https://www.tokstok.com.br/" data-name="Quadros Decorativos Duo" data-name-en="Decorative Frames Duo" data-store-name="Tok&amp;Stok">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-tok"></span>Tok&amp;Stok</p>
+        <p class="gift-name"><span data-lang-inline="pt">Quadros — Duo</span><span data-lang-inline="en">Frames — Duo</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">Impressão fine art, moldura carvalho</span><span data-lang-inline="en">Fine art print, oak frame</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 480</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+    <div class="gift-card" id="g9" data-cat="sala" data-store="zara" data-url="https://www.zarahome.com/br/" data-name="Almofadas Linho — Par" data-name-en="Linen Cushions — Pair" data-store-name="Zara Home">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-zara"></span>Zara Home</p>
+        <p class="gift-name"><span data-lang-inline="pt">Almofadas Linho — Par</span><span data-lang-inline="en">Linen Cushions — Pair</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">Linho natural, 50×50cm, cru</span><span data-lang-inline="en">Natural linen, 50×50cm, raw</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 340</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+    <div class="gift-card" id="g10" data-cat="cozinha" data-store="ml" data-url="https://www.mercadolivre.com.br/buscas/mixer-bamix" data-name="Mixer de Mão Bamix" data-name-en="Bamix Hand Blender" data-store-name="Mercado Livre">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1595521276210-eac37ba16c7d?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-ml"></span>Mercado Livre</p>
+        <p class="gift-name"><span data-lang-inline="pt">Mixer de Mão Bamix</span><span data-lang-inline="en">Bamix Hand Blender</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">200W, 3 acessórios, suíço</span><span data-lang-inline="en">200W, 3 accessories, Swiss</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 890</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+    <div class="gift-card" id="g11" data-cat="sala" data-store="tok" data-url="https://www.tokstok.com.br/" data-name="Espelho Redondo 80cm" data-name-en="Round Mirror 80cm" data-store-name="Tok&amp;Stok">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1615873968403-89e068629265?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-tok"></span>Tok&amp;Stok</p>
+        <p class="gift-name"><span data-lang-inline="pt">Espelho Redondo 80cm</span><span data-lang-inline="en">Round Mirror 80cm</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">Moldura metal dourado escovado</span><span data-lang-inline="en">Brushed gold metal frame</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 680</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+    <div class="gift-card" id="g12" data-cat="mesa" data-store="zara" data-url="https://www.zarahome.com/br/" data-name="Taças de Vinho — Jogo 6" data-name-en="Wine Glasses — Set of 6" data-store-name="Zara Home">
+      <div class="gift-card-img"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80" alt="" /></div>
+      <div class="gift-card-body">
+        <p class="gift-store"><span class="sdot sdot-zara"></span>Zara Home</p>
+        <p class="gift-name"><span data-lang-inline="pt">Taças de Vinho — Jogo 6</span><span data-lang-inline="en">Wine Glasses — Set of 6</span></p>
+        <p class="gift-desc"><span data-lang-inline="pt">Cristal soprado, haste fina</span><span data-lang-inline="en">Blown crystal, fine stem</span></p>
+        <div class="gift-footer"><span class="gift-price">R$ 720</span><button class="gift-btn"><span data-lang-inline="pt">Ver</span><span data-lang-inline="en">View</span></button></div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <div class="footer-monogram"><img src="monogram.png" alt="CP" /></div>
+    <p><span data-lang-inline="pt">Com amor,</span><span data-lang-inline="en">With love,</span></p>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:rgba(255,255,255,0.45);margin:6px 0 14px">Clara &amp; Pedro</p>
+    <p><a href="tel:+5516997416553">(16) 99741-6553</a></p>
+  </footer>
+
+  <!-- GIFT MODAL -->
+
+  <div class="modal-overlay" id="giftModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <span class="modal-eyebrow"><span data-lang-inline="pt">Antes de ir para a loja</span><span data-lang-inline="en">Before going to the store</span></span>
+      <h3 id="mName"></h3>
+      <span class="modal-store-label" id="mStore"></span>
+      <div class="addr-box">
+        <strong><span data-lang-inline="pt">Endereço de Entrega</span><span data-lang-inline="en">Delivery Address</span></strong>
+        <p>Clara Bisinoto &amp; Pedro Zambon<br/>Rua Lamartine Belém Barbosa, 216<br/>Ribeirânia · Ribeirão Preto - SP<br/>CEP 14096-250 · Tel: (16) 99741-6553</p>
+      </div>
+      <button class="modal-copy-btn" id="mCopyBtn"><span data-lang-inline="pt">Copiar endereço</span><span data-lang-inline="en">Copy address</span></button>
+      <br/><br/>
+      <a class="modal-go-btn" id="mGoBtn" href="#" target="_blank" rel="noopener">
+        <span data-lang-inline="pt">Ir para a loja →</span>
+        <span data-lang-inline="en">Go to store →</span>
+      </a>
+      <div class="modal-divider"></div>
+      <span class="modal-bought-label"><span data-lang-inline="pt">Já comprou?</span><span data-lang-inline="en">Already purchased?</span></span>
+      <p class="modal-bought-desc">
+        <span data-lang-inline="pt">Deixe seu nome para avisarmos os noivos — obrigado! 🤍</span>
+        <span data-lang-inline="en">Leave your name so we can let the couple know — thank you! 🤍</span>
+      </p>
+      <input class="modal-name-input" id="mBuyerInput" type="text" maxlength="60" autocomplete="off" />
+      <button class="modal-mark-btn" id="mMarkBtn">
+        <span data-lang-inline="pt">Marcar como presenteado</span>
+        <span data-lang-inline="en">Mark as gifted</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const ADDRESS = 'Clara Bisinoto & Pedro Zambon\nRua Lamartine Belém Barbosa, 216\nRibeirânia, Ribeirão Preto - SP\nCEP 14096-250\nTel: (16) 99741-6553';
+
+    /* LANG */
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      document.getElementById('btnPT').classList.toggle('active', lang === 'pt-BR');
+      document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+      document.getElementById('mBuyerInput').placeholder = lang === 'en' ? 'e.g. Maria & João' : 'Ex: Maria e João';
+    }
+    setLang('pt-BR');
+
+    /* NAV SCROLL */
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    /* SMOOTH SCROLL */
+    function goTo(id) { document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' }); }
+
+    /* MOBILE MENU */
+    document.getElementById('navHam').addEventListener('click', () => document.getElementById('mobileMenu').classList.add('open'));
+    document.getElementById('mobileClose').addEventListener('click', closeMobile);
+    function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+    /* REVEAL */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    /* RSVP */
+    function submitRSVP() {
+      const first = document.getElementById('firstName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if (!first || !email) {
+        alert(document.documentElement.lang === 'en' ? 'Please fill in your name and email.' : 'Por favor preencha nome e email.');
+        return;
+      }
+      document.getElementById('rsvpForm').style.display = 'none';
+      document.getElementById('rsvpSuccess').style.display = 'block';
+    }
+
+    /* ACCORDION */
+    function toggleAcc(btn) { btn.closest('.accordion-item').classList.toggle('open'); }
+
+    /* GIFT STATE */
+    const GIFT_KEY = 'cp_gifts_v2';
+    function loadGifts() { try { return JSON.parse(localStorage.getItem(GIFT_KEY)) || {}; } catch { return {}; } }
+    function saveGifts(s) { localStorage.setItem(GIFT_KEY, JSON.stringify(s)); }
+    let giftState = loadGifts();
+
+    function applyGiftState() {
+      document.querySelectorAll('.gift-card').forEach(card => {
+        const e = giftState[card.id];
+        card.querySelector('.gifted-overlay')?.remove();
+        card.classList.remove('is-gifted');
+        const btn = card.querySelector('.gift-btn');
+        if (btn) { btn.disabled = false; btn.style.opacity = ''; }
+        if (e) {
+          card.classList.add('is-gifted');
+          const ov = document.createElement('div');
+          ov.className = 'gifted-overlay';
+          ov.innerHTML = `<span class="gifted-badge"><span data-lang-inline="pt">Já presenteado</span><span data-lang-inline="en">Gifted</span></span>${e.buyer ? `<span class="gifted-by">por ${e.buyer}</span>` : ''}`;
+          card.querySelector('.gift-card-img').appendChild(ov);
+          if (btn) { btn.disabled = true; btn.style.opacity = '0.3'; }
+        }
+      });
+    }
+    applyGiftState();
+
+    /* GIFT FILTERS */
+    document.querySelectorAll('.gf-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.gf-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        document.querySelectorAll('.gift-card').forEach(card => {
+          card.dataset.hidden = (f === 'all' || card.dataset.cat === f || card.dataset.store === f) ? 'false' : 'true';
+        });
+      });
+    });
+
+    /* COPY ADDRESS (banner) */
+    document.getElementById('copyAddrBtn').addEventListener('click', function() {
+      navigator.clipboard.writeText(ADDRESS).then(() => {
+        this.textContent = '✓';
+        setTimeout(() => { this.innerHTML = '<span data-lang-inline="pt">Copiar endereço</span><span data-lang-inline="en">Copy address</span>'; setLang(document.documentElement.lang); }, 2000);
+      });
+    });
+
+    /* GIFT MODAL */
+    const giftModal = document.getElementById('giftModal');
+    let currentGiftId = null;
+
+    document.querySelectorAll('.gift-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.gift-card');
+        if (card.classList.contains('is-gifted')) return;
+        currentGiftId = card.id;
+        const lang = document.documentElement.lang;
+        document.getElementById('mName').textContent = lang === 'en' ? card.dataset.nameEn : card.dataset.name;
+        document.getElementById('mStore').textContent = card.dataset.storeName;
+        document.getElementById('mGoBtn').href = card.dataset.url;
+        document.getElementById('mBuyerInput').value = '';
+        const mb = document.getElementById('mMarkBtn');
+        mb.disabled = false;
+        mb.innerHTML = '<span data-lang-inline="pt">Marcar como presenteado</span><span data-lang-inline="en">Mark as gifted</span>';
+        setLang(lang);
+        giftModal.classList.add('open');
+      });
+    });
+
+    giftModal.addEventListener('click', e => { if (e.target === giftModal) closeModal(); });
+    function closeModal() { giftModal.classList.remove('open'); }
+
+    document.getElementById('mCopyBtn').addEventListener('click', function() {
+      navigator.clipboard.writeText(ADDRESS).then(() => {
+        this.textContent = '✓';
+        setTimeout(() => { this.innerHTML = '<span data-lang-inline="pt">Copiar endereço</span><span data-lang-inline="en">Copy address</span>'; setLang(document.documentElement.lang); }, 2000);
+      });
+    });
+
+    document.getElementById('mMarkBtn').addEventListener('click', function() {
+      const name = document.getElementById('mBuyerInput').value.trim();
+      if (!name) {
+        const inp = document.getElementById('mBuyerInput');
+        inp.style.borderColor = '#8b1a1a'; inp.focus();
+        setTimeout(() => inp.style.borderColor = '', 1500);
+        return;
+      }
+      giftState[currentGiftId] = { buyer: name, date: new Date().toISOString() };
+      saveGifts(giftState);
+      applyGiftState();
+      const lang = document.documentElement.lang;
+      this.textContent = lang === 'en' ? 'Registered! Thank you 🤍' : 'Registrado! Obrigado 🤍';
+      this.disabled = true;
+      setTimeout(closeModal, 1500);
+    });
+  </script>
+
+</body>
+</html>
