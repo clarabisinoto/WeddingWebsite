@@ -62,7 +62,7 @@ nav.scrolled {
   padding: 15px 48px;
   border-bottom-color: var(--warm-line);
 }
-.nav-logo img { height: 22px; width: auto; opacity: 0.85; }
+.nav-logo img { height: 22px; width: auto; mix-blend-mode: multiply; opacity: 0.85; }
 .nav-links { display: flex; gap: 40px; list-style: none; }
 .nav-links a {
   font-size: 10px; font-weight: 300;
@@ -101,10 +101,9 @@ nav.scrolled {
 
 /* ── HERO — cream/light ── */
 #hero {
-  min-height: 100svh;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 120px 48px 80px;
+  padding: 140px 48px 80px;
   background: var(--cream);
   position: relative;
   overflow: hidden;
@@ -130,15 +129,15 @@ nav.scrolled {
   to   { opacity: 1; transform: translateY(0); }
 }
 .hero-monogram {
-  display: flex; justify-content: center; margin-bottom: 32px;
+  display: flex; justify-content: center; margin-bottom: 24px;
 }
-.hero-monogram img { width: clamp(80px, 12vw, 120px); height: auto; opacity: 0.22; }
+.hero-monogram img { width: clamp(60px, 8vw, 88px); height: auto; opacity: 0.2; }
 .hero-title {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 300;
-  font-size: clamp(52px, 8vw, 96px);
+  font-size: clamp(44px, 7vw, 80px);
   color: var(--ink); line-height: 1; letter-spacing: -0.02em;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 .hero-title em { font-style: italic; color: var(--stone); }
 .hero-date {
@@ -146,10 +145,7 @@ nav.scrolled {
   letter-spacing: 0.32em; text-transform: uppercase;
   color: var(--stone);
 }
-.hero-rule {
-  width: 1px; height: 64px; background: var(--warm-line);
-  margin: 48px auto 0;
-}
+.hero-rule { display: none; }
 
 /* ── SHARED ── */
 section { padding: 110px 0; }
@@ -189,15 +185,17 @@ section { padding: 110px 0; }
 }
 .field input:focus { border-color: var(--ink); }
 .field input::placeholder { color: #bbb; }
-.radio-row { display: flex; gap: 28px; margin-top: 6px; flex-wrap: wrap; }
+.radio-row { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
 .radio-opt {
-  display: flex; align-items: center; gap: 9px;
+  display: flex; align-items: center; gap: 12px;
   cursor: pointer; font-size: 14px; font-weight: 300; color: var(--bark);
 }
 .radio-opt input[type="radio"] { display: none; }
 .radio-mark {
-  width: 14px; height: 14px; border: 1px solid var(--warm-line);
+  width: 16px; height: 16px;
+  border: 1.5px solid var(--bark);
   border-radius: 50%; flex-shrink: 0; position: relative; transition: border-color 0.2s;
+  background: white;
 }
 .radio-opt input:checked ~ .radio-mark { border-color: var(--ink); }
 .radio-opt input:checked ~ .radio-mark::after {
@@ -244,7 +242,7 @@ section { padding: 110px 0; }
 
 /* ── DICAS ── */
 #dicas { background: var(--cream); }
-.dicas-cols { display: grid; grid-template-columns: repeat(3,1fr); gap: 56px; margin-top: 56px; }
+.dicas-cols { display: grid; grid-template-columns: repeat(3,1fr); gap: 48px; margin-top: 52px; align-items: start; }
 .dica-col h3 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 22px; font-weight: 400;
@@ -841,7 +839,7 @@ html[lang="en"]    [data-i="en"] { display: inline; }
   <footer>
     <div class="footer-mono"><img src="monogram.png" alt="CP"/></div>
     <p><em>Clara &amp; Pedro</em></p>
-    <p style="margin-top:8px"><a href="mailto:contato@anamariaboz.com.br">contato@anamariaboz.com.br</a></p>
+    <p style="margin-top:8px"><a href="/cdn-cgi/l/email-protection#e5868a8b9184918aa5848b848884978c84878a9fcb868a88cb8797"><span class="__cf_email__" data-cfemail="ea8985849e8b9e85aa8b848b878b98838b888590c4898587c48898">[email&#160;protected]</span></a></p>
   </footer>
 
   <!-- GIFT MODAL -->
@@ -874,135 +872,129 @@ html[lang="en"]    [data-i="en"] { display: inline; }
     </div>
   </div>
 
-  <script>
-    const ADDR = 'Clara Bisinoto & Pedro Zambon\nRua Lamartine Belém Barbosa, 216\nRibeirânia, Ribeirão Preto - SP\nCEP 14096-250';
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
-    /* LANG */
-    function setLang(lang) {
-      document.documentElement.lang = lang;
-      document.getElementById('btnPT').classList.toggle('active', lang === 'pt-BR');
-      document.getElementById('btnEN').classList.toggle('active', lang === 'en');
-      document.getElementById('mBuyerInput').placeholder = lang === 'en' ? 'e.g. Maria & João' : 'Ex: Maria e João';
+```
+const ADDR = 'Clara Bisinoto & Pedro Zambon\nRua Lamartine Belém Barbosa, 216\nRibeirânia, Ribeirão Preto - SP\nCEP 14096-250';
+
+/* LANG */
+function setLang(lang) {
+  document.documentElement.lang = lang;
+  document.getElementById('btnPT').classList.toggle('active', lang === 'pt-BR');
+  document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+  document.getElementById('mBuyerInput').placeholder = lang === 'en' ? 'e.g. Maria & João' : 'Ex: Maria e João';
+}
+setLang('pt-BR');
+
+/* NAV SCROLL */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 80);
+});
+
+/* MOBILE */
+document.getElementById('navHam').addEventListener('click', () => document.getElementById('mobileMenu').classList.add('open'));
+document.getElementById('mobileClose').addEventListener('click', closeMob);
+function closeMob() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+/* REVEAL */
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+/* RSVP */
+document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-send');
+  const origHTML = btn.innerHTML;
+  btn.textContent = '...'; btn.disabled = true;
+  try {
+    const res = await fetch(e.target.action, { method: 'POST', body: new FormData(e.target), headers: { 'Accept': 'application/json' } });
+    if (res.ok) {
+      e.target.style.display = 'none';
+      document.getElementById('formThanks').style.display = 'block';
+    } else { btn.innerHTML = origHTML; btn.disabled = false; }
+  } catch { btn.innerHTML = origHTML; btn.disabled = false; }
+});
+
+/* ACCORDION */
+function acc(btn) { btn.closest('.acc-item').classList.toggle('open'); }
+
+/* COPY */
+document.getElementById('copyAddrBtn').addEventListener('click', function() {
+  navigator.clipboard.writeText(ADDR).then(() => {
+    this.textContent = '✓';
+    setTimeout(() => { this.innerHTML = '<span data-i="pt">Copiar endereço</span><span data-i="en">Copy address</span>'; setLang(document.documentElement.lang); }, 2000);
+  });
+});
+
+/* GIFT STATE */
+const GKEY = 'cp_v4';
+function loadG() { try { return JSON.parse(localStorage.getItem(GKEY)) || {}; } catch { return {}; } }
+function saveG(s) { localStorage.setItem(GKEY, JSON.stringify(s)); }
+let gs = loadG();
+function applyGs() {
+  document.querySelectorAll('.gift-card').forEach(card => {
+    const e = gs[card.id];
+    card.querySelector('.gifted-overlay')?.remove();
+    card.classList.remove('gifted');
+    const btn = card.querySelector('.gift-btn');
+    if (btn) { btn.disabled = false; btn.style.opacity = ''; }
+    if (e) {
+      card.classList.add('gifted');
+      const ov = document.createElement('div'); ov.className = 'gifted-overlay';
+      ov.innerHTML = `<span class="gifted-badge"><span data-i="pt">Já presenteado</span><span data-i="en">Gifted</span></span>${e.buyer ? `<span class="gifted-by">por ${e.buyer}</span>` : ''}`;
+      card.querySelector('.gift-img').appendChild(ov);
+      if (btn) { btn.disabled = true; btn.style.opacity = '0.28'; }
     }
-    setLang('pt-BR');
+  });
+}
+applyGs();
 
-    /* NAV SCROLL */
-    window.addEventListener('scroll', () => {
-      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 80);
+/* FILTERS */
+document.querySelectorAll('.gf').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.gf').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.f;
+    document.querySelectorAll('.gift-card').forEach(card => {
+      card.dataset.hidden = (f === 'all' || card.dataset.cat === f || card.dataset.st === f) ? 'false' : 'true';
     });
+  });
+});
 
-    /* MOBILE */
-    document.getElementById('navHam').addEventListener('click', () => document.getElementById('mobileMenu').classList.add('open'));
-    document.getElementById('mobileClose').addEventListener('click', closeMob);
-    function closeMob() { document.getElementById('mobileMenu').classList.remove('open'); }
+/* MODAL */
+const gModal = document.getElementById('giftModal');
+let curId = null;
+document.querySelectorAll('.gift-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.gift-card');
+    if (card.classList.contains('gifted')) return;
+    curId = card.id;
+    const lang = document.documentElement.lang;
+    document.getElementById('mName').textContent = lang === 'en' ? card.dataset.nameEn : card.dataset.name;
+    document.getElementById('mStore').textContent = card.dataset.store;
+    document.getElementById('mGoBtn').href = card.dataset.url;
+    document.getElementById('mBuyerInput').value = '';
+    const mb = document.getElementById('mMarkBtn');
+    mb.disabled = false;
+    mb.innerHTML = '<span data-i="pt">Marcar como presenteado</span><span data-i="en">Mark as gifted</span>';
+    setLang(lang);
+    gModal.classList.add('open');
+  });
+});
+gModal.addEventListener('click', e => { if (e.target === gModal) closeModal(); });
+function closeModal() { gModal.classList.remove('open'); }
 
-    /* REVEAL */
-    const revObs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+document.getElementById('mCopyBtn').addEventListener('click', function() {
+  navigator.clipboard.writeText(ADDR).then(() => {
+    this.textContent = '✓';
+    setTimeout(() => { this.innerHTML = '<span data-i="pt">Copiar endereço</span><span data-i="en">Copy address</span>'; setLang(document.documentElement.lang); }, 2000);
+  });
+});
 
-    /* RSVP */
-    document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = e.target.querySelector('.btn-send');
-      const origHTML = btn.innerHTML;
-      btn.textContent = '...'; btn.disabled = true;
-      try {
-        const res = await fetch(e.target.action, { method: 'POST', body: new FormData(e.target), headers: { 'Accept': 'application/json' } });
-        if (res.ok) {
-          e.target.style.display = 'none';
-          document.getElementById('formThanks').style.display = 'block';
-        } else { btn.innerHTML = origHTML; btn.disabled = false; }
-      } catch { btn.innerHTML = origHTML; btn.disabled = false; }
-    });
-
-    /* ACCORDION */
-    function acc(btn) { btn.closest('.acc-item').classList.toggle('open'); }
-
-    /* COPY */
-    document.getElementById('copyAddrBtn').addEventListener('click', function() {
-      navigator.clipboard.writeText(ADDR).then(() => {
-        this.textContent = '✓';
-        setTimeout(() => { this.innerHTML = '<span data-i="pt">Copiar endereço</span><span data-i="en">Copy address</span>'; setLang(document.documentElement.lang); }, 2000);
-      });
-    });
-
-    /* GIFT STATE */
-    const GKEY = 'cp_v4';
-    function loadG() { try { return JSON.parse(localStorage.getItem(GKEY)) || {}; } catch { return {}; } }
-    function saveG(s) { localStorage.setItem(GKEY, JSON.stringify(s)); }
-    let gs = loadG();
-    function applyGs() {
-      document.querySelectorAll('.gift-card').forEach(card => {
-        const e = gs[card.id];
-        card.querySelector('.gifted-overlay')?.remove();
-        card.classList.remove('gifted');
-        const btn = card.querySelector('.gift-btn');
-        if (btn) { btn.disabled = false; btn.style.opacity = ''; }
-        if (e) {
-          card.classList.add('gifted');
-          const ov = document.createElement('div'); ov.className = 'gifted-overlay';
-          ov.innerHTML = `<span class="gifted-badge"><span data-i="pt">Já presenteado</span><span data-i="en">Gifted</span></span>${e.buyer ? `<span class="gifted-by">por ${e.buyer}</span>` : ''}`;
-          card.querySelector('.gift-img').appendChild(ov);
-          if (btn) { btn.disabled = true; btn.style.opacity = '0.28'; }
-        }
-      });
-    }
-    applyGs();
-
-    /* FILTERS */
-    document.querySelectorAll('.gf').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.gf').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const f = btn.dataset.f;
-        document.querySelectorAll('.gift-card').forEach(card => {
-          card.dataset.hidden = (f === 'all' || card.dataset.cat === f || card.dataset.st === f) ? 'false' : 'true';
-        });
-      });
-    });
-
-    /* MODAL */
-    const gModal = document.getElementById('giftModal');
-    let curId = null;
-    document.querySelectorAll('.gift-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const card = btn.closest('.gift-card');
-        if (card.classList.contains('gifted')) return;
-        curId = card.id;
-        const lang = document.documentElement.lang;
-        document.getElementById('mName').textContent = lang === 'en' ? card.dataset.nameEn : card.dataset.name;
-        document.getElementById('mStore').textContent = card.dataset.store;
-        document.getElementById('mGoBtn').href = card.dataset.url;
-        document.getElementById('mBuyerInput').value = '';
-        const mb = document.getElementById('mMarkBtn');
-        mb.disabled = false;
-        mb.innerHTML = '<span data-i="pt">Marcar como presenteado</span><span data-i="en">Mark as gifted</span>';
-        setLang(lang);
-        gModal.classList.add('open');
-      });
-    });
-    gModal.addEventListener('click', e => { if (e.target === gModal) closeModal(); });
-    function closeModal() { gModal.classList.remove('open'); }
-
-    document.getElementById('mCopyBtn').addEventListener('click', function() {
-      navigator.clipboard.writeText(ADDR).then(() => {
-        this.textContent = '✓';
-        setTimeout(() => { this.innerHTML = '<span data-i="pt">Copiar endereço</span><span data-i="en">Copy address</span>'; setLang(document.documentElement.lang); }, 2000);
-      });
-    });
-
-    document.getElementById('mMarkBtn').addEventListener('click', function() {
-      const name = document.getElementById('mBuyerInput').value.trim();
-      if (!name) { const inp = document.getElementById('mBuyerInput'); inp.style.borderColor = '#8b1a1a'; inp.focus(); setTimeout(() => inp.style.borderColor = '', 1500); return; }
-      gs[curId] = { buyer: name, date: new Date().toISOString() };
-      saveG(gs); applyGs();
-      this.textContent = document.documentElement.lang === 'en' ? 'Registered! Thank you 🤍' : 'Registrado! Obrigado 🤍';
-      this.disabled = true;
-      setTimeout(closeModal, 1500);
-    });
-  </script>
-
-</body>
-</html>
+document.getElementById('mMarkBtn').addEventListener('click', function() {
+  const name = document.getElementById('mBuyerInput').value.trim();
+  if (!name) { const inp = document.getElementById('mBuyerInput'); inp.style.borderColor = '#8b1a1a'; inp.focus(); setTimeout(() => inp.style.borderColor = '', 1500); return; }
+  gs[curId] = { buyer: name, date: new Date().toISOString() 
+```
