@@ -11,7 +11,7 @@ const ML_IDS = [
   "MLB27617925"
 ];
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate=600");
 
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     for (const chunk of chunks) {
       const ids = chunk.join(",");
       const response = await fetch(
-        `https://api.mercadolibre.com/items?ids=${ids}&attributes=id,title,price,thumbnail,permalink,status,pictures`,
+        "https://api.mercadolibre.com/items?ids=" + ids + "&attributes=id,title,price,thumbnail,permalink,status,pictures",
         { headers: { "Accept": "application/json" } }
       );
       const data = await response.json();
