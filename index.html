@@ -450,9 +450,9 @@ footer a:hover{text-decoration:underline}
 
     <div class="gifts-filter">
       <button class="f-btn on" onclick="filterGifts('all',this)" data-i18n="f_all">Todos</button>
-      <button class="f-btn" onclick="filterGifts('mercado-livre',this)">Mercado Livre</button>
-      <button class="f-btn" onclick="filterGifts('tok-stok',this)">Tok&amp;Stok</button>
-      <button class="f-btn" onclick="filterGifts('zara-home',this)">Zara Home</button>
+      
+      
+      
     </div>
     <div class="gifts-grid" id="giftsGrid">
       <div class="g-loading" data-i18n="loading">Carregando presentes…</div>
@@ -674,104 +674,36 @@ function copyField(btn, text) {
 }
 
 // ── Gifts data ────────────────────────────────────────────────────────────────
-// Paste your published Google Sheets CSV URL here:
-// Google Sheets not used — all gifts loaded from Mercado Livre API
-
-var ML_IDS = [
-    "MLB52937122",
-    "MLB16051359",
-    "MLB15553603",
-    "MLB45070708",
-    "MLB19120023",
-    "MLB2990611492",
-    "MLB13852467",
-    "MLB47816179",
-    "MLB32485984",
-    "MLB34695705",
-    "MLB4332167297",
-    "MLB37758006",
-    "MLB3745190191",
-    "MLB5629562838",
-    "MLB32595060",
-    "MLB34811252",
-    "MLB32489412",
-    "MLB32486274",
-    "MLB32811872",
-    "MLB33308125",
-    "MLB24440801",
-    "MLB23973741",
-    "MLB46192801",
-    "MLB46644251",
-    "MLB52435039",
-    "MLB43013374",
-    "MLB33691830",
-    "MLB52932684",
-    "MLB32005043",
-    "MLB5831725924",
-    "MLB28111099",
-    "MLB32443370",
-    "MLB5759951784",
-    "MLB34834210",
-    "MLB4506346751",
-    "MLB25683213",
-    "MLB4304500829",
-    "MLB28601099",
-    "MLB26150097",
-    "MLB47126979",
-    "MLB28268564",
-    "MLB17351734",
-    "MLB28038602",
-    "MLB33795714",
-    "MLB40053237",
-    "MLB27617925"
-  ];
-
+// ── Gift registry — loaded from /api/gifts (Vercel proxy → Mercado Livre API)
 var allGifts = [];
-var giftsLoaded = false;
 
 function loadMLGifts() {
   var grid = document.getElementById("giftsGrid");
-  grid.innerHTML = '<div class="g-loading">' + (document.documentElement.lang === "pt-BR" ? "Carregando presentes…" : "Loading registry…") + '</div>';
-
-  var requests = ML_IDS.map(function(id) {
-    return fetch("https://api.mercadolibre.com/products/" + id)
-      .then(function(r) { return r.ok ? r.json() : null; })
-      .catch(function() { return null; });
-  });
-
-  Promise.all(requests).then(function(results) {
-    var gifts = [];
-    results.forEach(function(d, i) {
-      if (!d) return;
-      var id = ML_IDS[i];
-      var thumb = "";
-      if (d.pictures && d.pictures.length > 0) {
-        thumb = d.pictures[0].url
-          ? d.pictures[0].url.replace("http://","https://").replace("-O.jpg","-B.jpg")
-          : "";
-      }
-      var price = "";
-      if (d.buy_box_winner && d.buy_box_winner.price) {
-        price = "R$ " + parseFloat(d.buy_box_winner.price).toFixed(2).replace(".",",");
-      }
-      gifts.push({
-        id: id,
-        store: "mercado-livre",
-        sn: "Mercado Livre",
-        name: d.name || d.id,
-        nameEn: d.name || d.id,
-        desc: price,
-        descEn: price,
-        img: thumb,
-        url: "https://www.mercadolivre.com.br/p/" + id,
-        rsv: false,
-        status: d.status
+  grid.innerHTML = '<div class="g-loading">Carregando presentes…</div>';
+  fetch("/api/gifts")
+    .then(function(r) { return r.json(); })
+    .then(function(items) {
+      allGifts = items.map(function(item) {
+        return {
+          id: item.id,
+          store: "mercado-livre",
+          sn: "Mercado Livre",
+          name: item.name,
+          nameEn: item.name,
+          desc: item.price || "",
+          descEn: item.price || "",
+          img: item.img || "",
+          url: item.url,
+          rsv: false,
+          status: item.status || "active"
+        };
       });
+      renderGifts();
+    })
+    .catch(function() {
+      document.getElementById("giftsGrid").innerHTML =
+        '<div class="g-loading">Erro ao carregar. Recarregue a página.</div>';
     });
-    allGifts = gifts;
-    giftsLoaded = true;
-    renderGifts();
-  });
 }
 
 // ── Reservations (localStorage) ───────────────────────────────────────────────
@@ -813,7 +745,7 @@ function renderGifts() {
     var tagText = res ? t("tag_taken") : (outOfStock ? (lang==="pt"?"Esgotado":"Out of stock") : t("tag_avail"));
     var tagHtml = '<span class="g-tag ' + tagClass + '">' + tagText + '</span>';
     var outOfStock2 = g.status && g.status !== "active";
-    var confirmBtn = (res || outOfStock2) ? "" : '<button class="g-btn" onclick="openGM(\'' + g.id + '\')">' + t("btn_confirm") + '</button>';
+    var confirmBtn = (res || outOfStock2) ? "" : '<button class="g-btn" onclick="openGM(\''  + g.id + '\')">' + t("btn_confirm") + '</button>';
     var copyBtn = '<button class="g-btn sec" onclick="cpGift(\'' + g.id + '\', this)">' + t("btn_copy") + '</button>';
     html += '<div class="g-item' + (res ? " taken" : "") + '" id="gi-' + g.id + '">'
       + imgHtml
