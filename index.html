@@ -675,27 +675,104 @@ function copyField(btn, text) {
 
 // ── Gifts data ────────────────────────────────────────────────────────────────
 // Paste your published Google Sheets CSV URL here:
-var SHEET_URL = "";
+// Google Sheets not used — all gifts loaded from Mercado Livre API
 
-var GIFTS = [
-  { id:"ts1", store:"tok-stok", sn:"Tok&Stok", name:"Luminária de Mesa", nameEn:"Table Lamp", desc:"Base de madeira e cúpula em linho", descEn:"Wooden base with linen shade", img:"", url:"https://www.tokstok.com.br", rsv:false },
-  { id:"ts2", store:"tok-stok", sn:"Tok&Stok", name:"Vaso Decorativo", nameEn:"Decorative Vase", desc:"Trio cerâmica fosca, tons terrosos", descEn:"Matte ceramic trio, earthy tones", img:"", url:"https://www.tokstok.com.br", rsv:false },
-  { id:"ts3", store:"tok-stok", sn:"Tok&Stok", name:"Espelho Redondo 60cm", nameEn:"Round Mirror 60cm", desc:"Moldura fina metal preto matte", descEn:"Thin matte black metal frame", img:"", url:"https://www.tokstok.com.br", rsv:false },
-  { id:"ts4", store:"tok-stok", sn:"Tok&Stok", name:"Bandeja Decorativa", nameEn:"Decorative Tray", desc:"Acácia com alças douradas", descEn:"Acacia wood with gold handles", img:"", url:"https://www.tokstok.com.br", rsv:false },
-  { id:"ts5", store:"tok-stok", sn:"Tok&Stok", name:"Conjunto Xícaras Café", nameEn:"Coffee Cups Set", desc:"Porcelana branca, design moderno", descEn:"White porcelain, modern design", img:"", url:"https://www.tokstok.com.br", rsv:false },
-  { id:"zh1", store:"zara-home", sn:"Zara Home", name:"Roupa de Cama King — Percal", nameEn:"King Bed Set — Percale", desc:"300 fios, off-white", descEn:"300-thread, off-white", img:"", url:"https://www.zarahome.com/br", rsv:false },
-  { id:"zh2", store:"zara-home", sn:"Zara Home", name:"Porta-Retratos Set de 3", nameEn:"Photo Frame Set of 3", desc:"Metal dourado matte", descEn:"Matte gold metal frames", img:"", url:"https://www.zarahome.com/br", rsv:false },
-  { id:"zh3", store:"zara-home", sn:"Zara Home", name:"Difusor de Ambiente", nameEn:"Room Diffuser", desc:"Bambu & Baunilha, 100ml", descEn:"Bamboo & Vanilla, 100ml", img:"", url:"https://www.zarahome.com/br", rsv:false },
-  { id:"zh4", store:"zara-home", sn:"Zara Home", name:"Kit Toalhas de Mesa", nameEn:"Table Linen Set", desc:"Guardanapos e toalha em linho", descEn:"Linen napkins and tablecloth", img:"", url:"https://www.zarahome.com/br", rsv:false },
-  { id:"zh5", store:"zara-home", sn:"Zara Home", name:"Manta de Algodão", nameEn:"Cotton Throw Blanket", desc:"Tom camelo, textura trabalhada", descEn:"Camel tone, textured weave", img:"", url:"https://www.zarahome.com/br", rsv:false },
-  { id:"ml1", store:"mercado-livre", sn:"Mercado Livre", name:"Jogo de Toalhas de Banho", nameEn:"Bath Towel Set", desc:"4 peças, 100% algodão", descEn:"4-piece set, 100% cotton", img:"", url:"https://www.mercadolivre.com.br", rsv:false },
-  { id:"ml2", store:"mercado-livre", sn:"Mercado Livre", name:"Panela Antiaderente Premium", nameEn:"Non-Stick Pan Set", desc:"Conjunto cabo de silicone", descEn:"Set with silicone handles", img:"", url:"https://www.mercadolivre.com.br", rsv:false },
-  { id:"ml3", store:"mercado-livre", sn:"Mercado Livre", name:"Cafeteira Italiana (Moka)", nameEn:"Italian Coffee Maker", desc:"Inox, 6 xícaras", descEn:"Stainless steel, 6 cups", img:"", url:"https://www.mercadolivre.com.br", rsv:false },
-  { id:"ml4", store:"mercado-livre", sn:"Mercado Livre", name:"Kit Vinho — Decanter + Taças", nameEn:"Wine Kit — Decanter + Glasses", desc:"Conjunto sofisticado", descEn:"Sophisticated set", img:"", url:"https://www.mercadolivre.com.br", rsv:false },
-  { id:"ml5", store:"mercado-livre", sn:"Mercado Livre", name:"Aspirador Robô", nameEn:"Robot Vacuum", desc:"Automático com app de controle", descEn:"Automatic with control app", img:"", url:"https://www.mercadolivre.com.br", rsv:false }
-];
+var ML_IDS = [
+    "MLB52937122",
+    "MLB16051359",
+    "MLB15553603",
+    "MLB45070708",
+    "MLB19120023",
+    "MLB2990611492",
+    "MLB13852467",
+    "MLB47816179",
+    "MLB32485984",
+    "MLB34695705",
+    "MLB4332167297",
+    "MLB37758006",
+    "MLB3745190191",
+    "MLB5629562838",
+    "MLB32595060",
+    "MLB34811252",
+    "MLB32489412",
+    "MLB32486274",
+    "MLB32811872",
+    "MLB33308125",
+    "MLB24440801",
+    "MLB23973741",
+    "MLB46192801",
+    "MLB46644251",
+    "MLB52435039",
+    "MLB43013374",
+    "MLB33691830",
+    "MLB52932684",
+    "MLB32005043",
+    "MLB5831725924",
+    "MLB28111099",
+    "MLB32443370",
+    "MLB5759951784",
+    "MLB34834210",
+    "MLB4506346751",
+    "MLB25683213",
+    "MLB4304500829",
+    "MLB28601099",
+    "MLB26150097",
+    "MLB47126979",
+    "MLB28268564",
+    "MLB17351734",
+    "MLB28038602",
+    "MLB33795714",
+    "MLB40053237",
+    "MLB27617925"
+  ];
 
-var allGifts = GIFTS.slice();
+var allGifts = [];
+var giftsLoaded = false;
+
+function loadMLGifts() {
+  var grid = document.getElementById("giftsGrid");
+  grid.innerHTML = '<div class="g-loading">' + (document.documentElement.lang === "pt-BR" ? "Carregando presentes…" : "Loading registry…") + '</div>';
+
+  var requests = ML_IDS.map(function(id) {
+    return fetch("https://api.mercadolibre.com/products/" + id)
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .catch(function() { return null; });
+  });
+
+  Promise.all(requests).then(function(results) {
+    var gifts = [];
+    results.forEach(function(d, i) {
+      if (!d) return;
+      var id = ML_IDS[i];
+      var thumb = "";
+      if (d.pictures && d.pictures.length > 0) {
+        thumb = d.pictures[0].url
+          ? d.pictures[0].url.replace("http://","https://").replace("-O.jpg","-B.jpg")
+          : "";
+      }
+      var price = "";
+      if (d.buy_box_winner && d.buy_box_winner.price) {
+        price = "R$ " + parseFloat(d.buy_box_winner.price).toFixed(2).replace(".",",");
+      }
+      gifts.push({
+        id: id,
+        store: "mercado-livre",
+        sn: "Mercado Livre",
+        name: d.name || d.id,
+        nameEn: d.name || d.id,
+        desc: price,
+        descEn: price,
+        img: thumb,
+        url: "https://www.mercadolivre.com.br/p/" + id,
+        rsv: false,
+        status: d.status
+      });
+    });
+    allGifts = gifts;
+    giftsLoaded = true;
+    renderGifts();
+  });
+}
 
 // ── Reservations (localStorage) ───────────────────────────────────────────────
 var RK = "cp_w_v4";
@@ -731,8 +808,12 @@ function renderGifts() {
     var imgHtml = g.img
       ? '<img class="g-img" src="' + g.img + '" alt="' + nm + '" loading="lazy">'
       : '<div class="g-ph">' + giftPlaceholderSVG + '</div>';
-    var tagHtml = '<span class="g-tag ' + (res ? "taken" : "avail") + '">' + (res ? t("tag_taken") : t("tag_avail")) + '</span>';
-    var confirmBtn = res ? "" : '<button class="g-btn" onclick="openGM(\'' + g.id + '\')">' + t("btn_confirm") + '</button>';
+    var outOfStock = g.status && g.status !== "active";
+    var tagClass = res ? "taken" : (outOfStock ? "taken" : "avail");
+    var tagText = res ? t("tag_taken") : (outOfStock ? (lang==="pt"?"Esgotado":"Out of stock") : t("tag_avail"));
+    var tagHtml = '<span class="g-tag ' + tagClass + '">' + tagText + '</span>';
+    var outOfStock2 = g.status && g.status !== "active";
+    var confirmBtn = (res || outOfStock2) ? "" : '<button class="g-btn" onclick="openGM(\'' + g.id + '\')">' + t("btn_confirm") + '</button>';
     var copyBtn = '<button class="g-btn sec" onclick="cpGift(\'' + g.id + '\', this)">' + t("btn_copy") + '</button>';
     html += '<div class="g-item' + (res ? " taken" : "") + '" id="gi-' + g.id + '">'
       + imgHtml
@@ -810,34 +891,6 @@ document.getElementById("gModal").addEventListener("click", function(e) {
   if (e.target === document.getElementById("gModal")) closeModal();
 });
 
-// ── Google Sheets loader ──────────────────────────────────────────────────────
-function loadSheet() {
-  if (!SHEET_URL) return;
-  fetch(SHEET_URL)
-    .then(function(r) { return r.text(); })
-    .then(function(csv) {
-      var rows = csv.trim().split("\n").slice(1);
-      var data = rows.map(function(row, i) {
-        var c = row.split(",");
-        return {
-          id: c[0] ? c[0].trim() : ("s" + i),
-          store: c[1] ? c[1].trim() : "",
-          sn: c[2] ? c[2].trim() : "",
-          name: c[3] ? c[3].trim() : "",
-          nameEn: c[4] ? c[4].trim() : "",
-          desc: c[5] ? c[5].trim() : "",
-          descEn: c[6] ? c[6].trim() : "",
-          img: c[7] ? c[7].trim() : "",
-          url: c[8] ? c[8].trim() : "",
-          rsv: c[9] ? c[9].trim() === "true" : false
-        };
-      }).filter(function(g) { return g.name; });
-      allGifts = data;
-      renderGifts();
-    })
-    .catch(function(e) { console.warn("Sheet load failed:", e); });
-}
-
 // ── Scroll fade-in ────────────────────────────────────────────────────────────
 var fadeObs = new IntersectionObserver(function(entries) {
   entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add("in"); });
@@ -845,8 +898,7 @@ var fadeObs = new IntersectionObserver(function(entries) {
 document.querySelectorAll(".fi").forEach(function(el) { fadeObs.observe(el); });
 
 // ── Init ──────────────────────────────────────────────────────────────────────
-renderGifts();
-loadSheet();
+loadMLGifts();
 </script>
 </body>
 </html>
