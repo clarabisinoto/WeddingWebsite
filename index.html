@@ -683,26 +683,43 @@ function loadGifts() {
     .then(function(r) { return r.text(); })
     .then(function(csv) {
       var lines = csv.trim().split("\n");
-      var headers = lines[0].split(",").map(function(h) { return h.trim().replace(/"/g,""); });
-      var gifts = [];
-      for (var i = 1; i < lines.length; i++) {
-        // Handle quoted fields with commas
+
+      // Find the header row — look for the line that contains "id" and "store"
+      var headerIdx = 0;
+      for (var li = 0; li < lines.length; li++) {
+        var lower = lines[li].toLowerCase();
+        if (lower.indexOf("id") !== -1 && lower.indexOf("store") !== -1 && lower.indexOf("name") !== -1) {
+          headerIdx = li;
+          break;
+        }
+      }
+
+      // Parse a CSV line handling quoted fields
+      function parseCSVLine(line) {
         var row = [];
         var cur = "";
         var inQ = false;
-        var line = lines[i];
         for (var c = 0; c < line.length; c++) {
           if (line[c] === '"') { inQ = !inQ; }
           else if (line[c] === "," && !inQ) { row.push(cur.trim()); cur = ""; }
           else { cur += line[c]; }
         }
         row.push(cur.trim());
+        return row;
+      }
+
+      var headers = parseCSVLine(lines[headerIdx]).map(function(h) { return h.replace(/"/g,"").trim(); });
+      var gifts = [];
+
+      for (var i = headerIdx + 1; i < lines.length; i++) {
+        var row = parseCSVLine(lines[i]);
         if (row.length < 2) continue;
         var obj = {};
         for (var h = 0; h < headers.length; h++) {
-          obj[headers[h]] = row[h] || "";
+          obj[headers[h]] = (row[h] || "").replace(/"/g, "").trim();
         }
-        if (!obj.name && !obj.id) continue;
+        // Skip hint rows and empty rows
+        if (!obj.name || obj.id === "ID único (ex: ml1, ts1)" || obj.name === "Nome do produto") continue;
         gifts.push({
           id: obj.id || ("item" + i),
           store: obj.store || "mercado-livre",
@@ -711,7 +728,7 @@ function loadGifts() {
           desc: obj.desc || obj.price || "",
           img: obj.img || "",
           url: obj.url || "",
-          rsv: obj.reserved === "true"
+          rsv: obj.reserved && obj.reserved.toLowerCase() === "true"
         });
       }
       allGifts = gifts;
