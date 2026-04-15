@@ -158,6 +158,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);backgrou
 .g-store{font-size:0.56rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);margin-bottom:0.3rem}
 .g-name{font-family:var(--serif);font-size:1rem;font-weight:400;line-height:1.3;margin-bottom:0.2rem;color:var(--ink)}
 .g-desc{font-size:0.78rem;color:var(--ink);margin-bottom:0.75rem}
+.g-price{font-size:0.92rem;font-weight:500;color:var(--ink);margin-bottom:0.75rem;letter-spacing:0.01em}
 .g-tag{display:inline-block;font-size:0.56rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid;margin-bottom:0.8rem}
 .g-tag.avail{border-color:#4A7C59;color:#4A7C59;background:#EAF4EE}
 .g-tag.taken{border-color:#999;color:#666;background:#F0F0F0}
@@ -463,6 +464,13 @@ footer a:hover{text-decoration:underline}
           <button class="copy-btn" onclick="copyField(this,'(16) 99741-6553')" data-i18n="del_copy">Copiar</button>
         </div>
     
+        <div class="delivery-row">
+          <div class="delivery-row-left">
+            <span class="delivery-row-lbl" data-i18n="del_lbl_email">E-mail (para vale presentes)</span>
+            <span class="delivery-row-val">clarabisborges@gmail.com</span>
+          </div>
+          <button class="copy-btn" onclick="copyField(this,'clarabisborges@gmail.com')" data-i18n="del_copy">Copiar</button>
+        </div>
         <div class="delivery-row" style="background:#FAFAFA">
           <div class="delivery-row-left">
             <span class="delivery-row-lbl" data-i18n="del_lbl_amazon">Para convidados fora do Brasil</span>
@@ -503,6 +511,26 @@ footer a:hover{text-decoration:underline}
     <div class="m-url" id="mUrl"></div>
     <div class="m-cp-ok" id="mCpOk"></div>
     <div class="m-actions" id="mActs"></div>
+  </div>
+</div>
+
+<!-- ADDRESS POPUP (shown before redirecting to buy) -->
+<div class="m-overlay" id="addrModal">
+  <div class="modal" style="max-width:400px">
+    <button class="m-close" onclick="closeAddrModal()">&#x2715;</button>
+    <p class="m-store" style="margin-bottom:0.8rem" data-i18n="addr_modal_title">Antes de comprar</p>
+    <p style="font-size:0.88rem;color:var(--ink);margin-bottom:1.4rem" data-i18n="addr_modal_desc">Copie o endereço de entrega para colar no site da loja.</p>
+    <div style="background:var(--soft);border:1px solid var(--border);padding:1rem 1.1rem;margin-bottom:1.2rem;font-size:0.83rem;line-height:1.8;color:var(--ink)" id="addrModalText">
+      Rua Lamartine Belém Barbosa, 216<br>
+      Ribeirânia · Ribeirão Preto, SP<br>
+      CEP: 14096-250<br>
+      Tel: (16) 99741-6553
+    </div>
+    <div style="display:flex;gap:0.7rem;flex-wrap:wrap">
+      <button class="btn btn-fill" style="font-size:0.67rem;padding:0.72rem 1.3rem" onclick="copyAddrAndGo()" id="addrCopyBtn" data-i18n="addr_copy_go">Copiar endereço e ir à loja</button>
+      <button class="btn btn-outline" style="font-size:0.67rem;padding:0.72rem 1.3rem" onclick="goDirectly()" data-i18n="addr_go_direct">Ir direto à loja</button>
+    </div>
+    <div id="addrCopiedFb" style="font-size:0.72rem;color:var(--ink);margin-top:0.6rem;display:none" data-i18n="addr_copied">Endereço copiado! Abrindo a loja…</div>
   </div>
 </div>
 
@@ -569,9 +597,9 @@ var T = {
     gifts_label:"Lista de Presentes", gifts_h2:"Presentes",
     gifts_thanks:"Estamos construindo nosso lar juntos.", gifts_intro:"Obrigado pela gentileza. Utilize os botões abaixo para copiar as informações de entrega e finalizar a compra.",
     del_title:"Endereço de Entrega",
-    del_lbl_addr:"Endereço", del_lbl_phone:"Contato", del_copy:"Copiar", del_lbl_amazon:"Para convidados fora do Brasil", del_amazon_desc:"Disponibilizamos uma lista na Amazon USA", del_amazon_btn:"Amazon Registry",
+    del_lbl_addr:"Endereço", del_lbl_email:"E-mail (para vale presentes)", del_lbl_phone:"Contato", del_copy:"Copiar", addr_modal_title:"Antes de comprar", addr_modal_desc:"Copie o endereço de entrega para colar no site da loja.", addr_copy_go:"Copiar endereço e ir à loja", addr_go_direct:"Ir direto à loja", addr_copied:"Endereço copiado! Abrindo a loja…", del_lbl_amazon:"Para convidados fora do Brasil", del_amazon_desc:"Disponibilizamos uma lista na Amazon USA", del_amazon_btn:"Amazon Registry",
     f_all:"Todos", f_all_cat:"Todas categorias", f_cozinha:"Cozinha", f_decoracao:"Decoração", f_eletronicos:"Eletrônicos", loading:"Carregando presentes…",
-    btn_confirm:"Confirmar escolha", btn_buy:"Comprar →",
+    btn_confirm:"Marcar como presenteado", btn_buy:"Comprar →",
     btn_copy:"Copiar link", btn_undo:"Desfazer",
     tag_avail:"Disponível", tag_taken:"Selecionado",
     m_taken:"Este item já foi selecionado por outro convidado.",
@@ -628,11 +656,11 @@ var T = {
     gifts_label:"Gift Registry", gifts_h2:"Gifts",
     gifts_thanks:"We are building our home together.", gifts_intro:"Thank you for your generosity. Use the buttons below to copy the delivery information and complete your purchase.",
     del_title:"Delivery Address",
-    del_lbl_addr:"Address", del_lbl_phone:"Contact", del_copy:"Copy", del_lbl_amazon:"For guests outside Brazil", del_amazon_desc:"We have a registry on Amazon USA", del_amazon_btn:"Amazon Registry",
+    del_lbl_addr:"Address", del_lbl_email:"Email (for gift cards)", del_lbl_phone:"Contact", del_copy:"Copy", addr_modal_title:"Before you buy", addr_modal_desc:"Copy the delivery address to paste on the store website.", addr_copy_go:"Copy address and go to store", addr_go_direct:"Go directly to store", addr_copied:"Address copied! Opening store…", del_lbl_amazon:"For guests outside Brazil", del_amazon_desc:"We have a registry on Amazon USA", del_amazon_btn:"Amazon Registry",
     f_all:"All", f_all_cat:"All categories", f_cozinha:"Kitchen", f_decoracao:"Decor", f_eletronicos:"Electronics", loading:"Loading registry…",
-    btn_confirm:"Confirm selection", btn_buy:"Buy now →",
+    btn_confirm:"Mark as gifted", btn_buy:"Buy now →",
     btn_copy:"Copy link", btn_undo:"Undo",
-    tag_avail:"Available", tag_taken:"Selected",
+    tag_avail:"Available", tag_taken:"Gifted ✓",
     m_taken:"This item has already been selected by another guest.",
     m_copied:"Link copied! ✓", field_copied:"Copied ✓"
   }
@@ -753,7 +781,19 @@ function loadGifts() {
           rsv: obj.reserved && obj.reserved.toLowerCase() === "true"
         });
       }
-      allGifts = gifts;
+      // Add Zara Home gift card as first item
+      var zhGiftCard = {
+        id: "zh-giftcard",
+        store: "zara-home",
+        sn: "Zara Home",
+        name: lang === "en" ? "Zara Home Gift Card" : "Vale Presente Zara Home",
+        desc: lang === "en" ? "Any value — used directly on zarahome.com" : "Qualquer valor — utilizado direto em zarahome.com",
+        cat: "decoracao",
+        img: "",
+        url: "https://www.zarahome.com/br/virtual-card.html",
+        rsv: false
+      };
+      allGifts = [zhGiftCard].concat(gifts);
       renderGifts();
     })
     .catch(function() {
@@ -810,14 +850,17 @@ function renderGifts() {
     var tagClass = res ? "taken" : "avail";
     var tagLabel = res ? t("tag_taken") : t("tag_avail");
     var tagHtml  = '<span class="g-tag ' + tagClass + '">' + tagLabel + '</span>';
-    var confirmBtn = res ? "" : '<button class="g-btn" onclick="confirmGift(\'' + g.id + '\')">' + t("btn_confirm") + '</button>';
-    var buyBtn = '<a href="' + g.url + '" target="_blank" class="g-btn sec" style="text-decoration:none">' + (lang==="pt"?"Comprar":"Buy") + ' →</a>';
+    var myRes = getR().indexOf(g.id) !== -1;
+    var confirmBtn = res
+      ? (myRes ? '<button class="g-btn sec" onclick="unconfirmGift(\''+g.id+'\')" style="font-size:0.58rem">'+(lang==="pt"?"Desfazer":"Undo")+'</button>' : '')
+      : '<button class="g-btn" onclick="confirmGift(\''+g.id+'\')">' + t("btn_confirm") + '</button>';
+    var buyBtn = '<button class="g-btn sec" onclick="buyWithAddr(\'' + g.url + '\')">' + (lang==="pt"?"Comprar":"Buy") + ' →</button>';
     out += '<div class="g-item' + (res ? " taken" : "") + '" id="gi-' + g.id + '">'
       + imgHtml
       + '<div class="g-body">'
       + '<p class="g-store">' + g.sn + '</p>'
       + '<p class="g-name">' + nm + '</p>'
-      + '<p class="g-desc">' + ds + '</p>'
+      + '<p class="g-price">' + ds + '</p>'
       + tagHtml
       + '<div class="g-actions">' + confirmBtn + buyBtn + '</div>'
       + '</div></div>';
@@ -885,6 +928,7 @@ function copyModalAddr() {
 }
 
 function confirmGift(id) { addR(id); renderGifts(); }
+function unconfirmGift(id) { delR(id); renderGifts(); }
 
 function doConfirmAndClose() {
   addR(openId);
@@ -944,6 +988,55 @@ function scrollCarousel(dir) {
   var grid = document.getElementById("cardGrid");
   if (grid) grid.scrollBy({ left: dir * 460, behavior: "smooth" });
 }
+
+var pendingBuyUrl = "";
+
+function buyWithAddr(url) {
+  pendingBuyUrl = url;
+  // Update address text based on language
+  var el = document.getElementById("addrModalText");
+  if (el) {
+    if (lang === "en") {
+      el.innerHTML = "Rua Lamartine Bél\u00e9m Barbosa, 216<br>Ribeirânia · Ribeirão Preto, SP<br>ZIP: 14096-250<br>Tel: +55 (16) 99741-6553";
+    } else {
+      el.innerHTML = "Rua Lamartine Bél\u00e9m Barbosa, 216<br>Ribeirânia · Ribeirão Preto, SP<br>CEP: 14096-250<br>Tel: (16) 99741-6553";
+    }
+  }
+  document.getElementById("addrCopiedFb").style.display = "none";
+  document.getElementById("addrModal").classList.add("open");
+}
+
+function closeAddrModal() {
+  document.getElementById("addrModal").classList.remove("open");
+  pendingBuyUrl = "";
+}
+
+function copyAddrAndGo() {
+  var addr = "Rua Lamartine Belém Barbosa, 216, Ribeirânia, Ribeirão Preto, SP, CEP 14096-250. Tel: (16) 99741-6553";
+  navigator.clipboard.writeText(addr).then(function() {
+    var fb = document.getElementById("addrCopiedFb");
+    fb.style.display = "block";
+    setTimeout(function() {
+      closeAddrModal();
+      window.open(pendingBuyUrl, "_blank");
+    }, 1200);
+  }).catch(function() {
+    // fallback if clipboard fails
+    closeAddrModal();
+    window.open(pendingBuyUrl, "_blank");
+  });
+}
+
+function goDirectly() {
+  closeAddrModal();
+  window.open(pendingBuyUrl, "_blank");
+}
+
+// Close addr modal on overlay click
+document.getElementById("addrModal").addEventListener("click", function(e) {
+  if (e.target === document.getElementById("addrModal")) closeAddrModal();
+});
+
 // ── Scroll fade-in ────────────────────────────────────────────────────────────
 var fadeObs = new IntersectionObserver(function(entries) {
   entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add("in"); });
