@@ -271,7 +271,7 @@ footer a:hover{text-decoration:underline}
 <div class="divider"></div>
 
 <!-- LOCAL -->
-<div id="local" class="sec fi">
+<div id="local" class="sec">
   <div class="sec-inner">
     <p class="sec-label" data-i18n="local_label">Onde &amp; Quando</p>
     <h2 class="sec-h2" data-i18n="local_h2">O Evento</h2>
@@ -294,7 +294,7 @@ footer a:hover{text-decoration:underline}
 <div class="divider"></div>
 
 <!-- CHEGADA -->
-<div id="chegada" class="sec fi">
+<div id="chegada" class="sec">
   <div class="sec-inner">
     <p class="sec-label" data-i18n="chegada_label">Como Chegar</p>
     <h2 class="sec-h2" data-i18n="chegada_h2">Instruções de Chegada</h2>
@@ -322,7 +322,7 @@ footer a:hover{text-decoration:underline}
 <div class="divider"></div>
 
 <!-- TRAJE -->
-<div id="traje" class="sec fi">
+<div id="traje" class="sec">
   <div class="sec-inner">
     <p class="sec-label" data-i18n="traje_label">Dress Code</p>
     <h2 class="sec-h2" data-i18n="traje_h2">Traje</h2>
@@ -377,7 +377,7 @@ footer a:hover{text-decoration:underline}
 <div class="divider"></div>
 
 <!-- RSVP -->
-<div id="rsvp" class="sec fi">
+<div id="rsvp" class="sec">
   <div class="sec-inner">
     <p class="sec-label" data-i18n="rsvp_label">Confirmação de Presença</p>
     <h2 class="sec-h2" data-i18n="rsvp_h2">Por favor, confirme sua presença.</h2>
@@ -410,7 +410,7 @@ footer a:hover{text-decoration:underline}
 <div class="divider"></div>
 
 <!-- DICAS -->
-<div id="dicas" class="sec fi">
+<div id="dicas" class="sec">
   <div class="sec-inner wide">
     <p class="sec-label" data-i18n="dicas_label">Para sua Estadia</p>
     <h2 class="sec-h2" data-i18n="dicas_h2">Dicas em Ribeirão Preto</h2>
@@ -698,7 +698,12 @@ function tick() {
   document.getElementById("cd-h").textContent = Math.floor((diff % 86400000) / 3600000);
   document.getElementById("cd-m").textContent = Math.floor((diff % 3600000) / 60000);
 }
-tick();
+// Run countdown after DOM is ready
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", function() { tick(); });
+} else {
+  tick();
+}
 setInterval(tick, 60000);
 
 // ── Menu ──────────────────────────────────────────────────────────────────────
@@ -1069,13 +1074,15 @@ document.getElementById("addrModal").addEventListener("click", function(e) {
 });
 
 // ── Scroll fade-in ────────────────────────────────────────────────────────────
-var fadeObs = new IntersectionObserver(function(entries) {
-  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add("in"); });
-}, { threshold: 0.07 });
-document.querySelectorAll(".fi").forEach(function(el) { fadeObs.observe(el); });
+// Fade-in disabled for mobile compatibility
+document.querySelectorAll(".fi").forEach(function(el) { el.classList.add("in"); });
 
 // ── Init ──────────────────────────────────────────────────────────────────────
-loadGifts();
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", loadGifts);
+} else {
+  loadGifts();
+}
 </script>
 </body>
 </html>
