@@ -866,17 +866,20 @@ function renderGifts() {
     var tagLabel = res ? t("tag_taken") : t("tag_avail");
     var tagHtml  = '<span class="g-tag ' + tagClass + '">' + tagLabel + '</span>';
     var myRes = getR().indexOf(g.id) !== -1;
-    var confirmBtn = res
-      ? (myRes ? '<button class="g-btn sec" onclick="unconfirmGift(\''+g.id+'\')" style="font-size:0.58rem">'+(lang==="pt"?"Desfazer":"Undo")+'</button>' : '')
-      : '<button class="g-btn" onclick="confirmGift(\''+g.id+'\')">' + t("btn_confirm") + '</button>';
+    var isGiftCard = g.id === "zh-giftcard";
+    var confirmBtn = isGiftCard ? ""
+      : res
+        ? (myRes ? '<button class="g-btn sec" onclick="unconfirmGift(''+g.id+'')" style="font-size:0.58rem">'+(lang==="pt"?"Desfazer":"Undo")+'</button>' : '')
+        : '<button class="g-btn" onclick="confirmGift(''+g.id+'')">' + t("btn_confirm") + '</button>';
     var buyBtn = '<button class="g-btn sec" onclick="buyWithAddr(\'' + g.url + '\')">' + (lang==="pt"?"Comprar":"Buy") + ' →</button>';
+    var showTag = isGiftCard ? "" : tagHtml;
     out += '<div class="g-item' + (res ? " taken" : "") + '" id="gi-' + g.id + '">'
       + imgHtml
       + '<div class="g-body">'
       + '<p class="g-store">' + g.sn + '</p>'
       + '<p class="g-name">' + nm + '</p>'
       + '<p class="g-price">' + ds + '</p>'
-      + tagHtml
+      + showTag
       + '<div class="g-actions">' + confirmBtn + buyBtn + '</div>'
       + '</div></div>';
   }
