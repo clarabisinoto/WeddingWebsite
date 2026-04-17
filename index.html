@@ -695,12 +695,16 @@ function tick() {
   document.getElementById("cd-m").textContent = Math.floor((diff % 3600000) / 60000);
 }
 // Run countdown after DOM is ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", function() { tick(); });
-} else {
+// Countdown init - fully wrapped in DOMContentLoaded
+function startCountdown() {
   tick();
+  setInterval(tick, 1000);
 }
-setInterval(tick, 1000);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startCountdown);
+} else {
+  startCountdown();
+}
 
 // ── Menu ──────────────────────────────────────────────────────────────────────
 function toggleMenu() { document.getElementById("mmenu").classList.toggle("open"); }
