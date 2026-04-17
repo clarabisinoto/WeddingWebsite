@@ -57,7 +57,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);backgrou
 .hero-date{margin-top:2.2rem;font-size:0.7rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:var(--ink)}
 .hero-rule{width:36px;height:1px;background:var(--ink);opacity:0.4;margin:1.3rem auto}
 .hero-venue{font-family:var(--serif);font-size:1.05rem;font-style:italic;color:var(--ink)}
-.countdown{display:flex;gap:2.5rem;margin-top:2.8rem;justify-content:center}
+
 
 
 
@@ -124,12 +124,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);backgrou
 
 /* CAROUSEL */
 .carousel-wrap{position:relative}
-.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:var(--bg);border:1px solid var(--border);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;font-size:1rem;transition:all 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.1)}.carousel-btn.prev{left:-18px}.carousel-btn.next{right:-18px}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:var(--bg);border:1px solid var(--border);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;font-size:0.9rem;transition:opacity 0.2s}.carousel-btn.prev{left:-17px}.carousel-btn.next{right:-17px}
 .carousel-btn:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .carousel-btn.prev{left:-16px}
 .carousel-btn.next{right:-16px}
 /* CARDS */
-.card-grid{display:flex;overflow-x:auto;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:1.8rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}.card-grid::-webkit-scrollbar{display:none}
+.card-grid{display:flex;overflow-x:auto;gap:1.5rem;margin-top:1.8rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0.25rem 0}.card-grid::-webkit-scrollbar{display:none}
 .card{background:var(--bg);padding:1.7rem 1.4rem;min-width:220px;max-width:220px;scroll-snap-align:start;flex-shrink:0}
 .card-cat{font-size:0.57rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);margin-bottom:0.4rem}
 .card h3{font-family:var(--serif);font-size:1.1rem;font-weight:400;margin-bottom:0.35rem;color:var(--ink)}
@@ -207,7 +207,7 @@ footer a:hover{text-decoration:underline}
   .two-col{grid-template-columns:1fr;gap:2rem}
   .traje-grid{grid-template-columns:1fr}
   .form-grid{grid-template-columns:1fr}
-  .countdown{gap:1.6rem}
+  
   
 }
 @media(max-width:500px){
@@ -260,13 +260,7 @@ footer a:hover{text-decoration:underline}
     <p class="hero-date" data-i18n="hero_date">27 DE JUNHO DE 2026</p>
     <div class="hero-rule"></div>
     <p class="hero-venue" data-i18n="hero_venue">Espaço Casa de Campo · Ribeirão Preto · 19h</p>
-    <div class="countdown">
-      <div class="cd-item"><span class="cd-n" id="cd-d">—</span><span class="cd-l" data-i18n="
-      <div class="cd-item"><span class="cd-n" id="cd-h">—</span><span class="cd-l" data-i18n="
-      <div class="cd-item"><span class="cd-n" id="cd-m">—</span><span class="cd-l" data-i18n="
-    </div>
-  </div>
-</div>
+  </div></div>
 
 <div class="divider"></div>
 
@@ -419,10 +413,7 @@ footer a:hover{text-decoration:underline}
       <div class="card"><p class="card-cat" data-i18n="cat_b">Beleza</p><h3>Aminatta</h3><p data-i18n="b1">Make e cabelo para ocasiões especiais</p><a href="https://maps.google.com/?q=Aminatta+Ribeirão+Preto" target="_blank">Google Maps ↗</a></div>
       <div class="card"><p class="card-cat" data-i18n="cat_b">Beleza</p><h3>Nina Beauty</h3><p data-i18n="b2">Salão completo, hair e nail</p><a href="https://maps.google.com/?q=Nina+Beauty+Ribeirão+Preto" target="_blank">Google Maps ↗</a></div>
       <div class="card"><p class="card-cat" data-i18n="cat_b">Beleza</p><h3>Studio W — Iguatemi</h3><p data-i18n="b3">Dentro do Shopping Iguatemi, praticidade e qualidade</p><a href="https://maps.google.com/?q=Studio+W+Iguatemi+Ribeirão+Preto" target="_blank">Google Maps ↗</a></div>
-    </div>
-
-  </div>
-</div>
+</div><button class="carousel-btn next" onclick="scrollCarousel(1)" aria-label="Próximo">&#8594;</button></div>
 
 <div class="divider"></div>
 
